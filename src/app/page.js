@@ -2,8 +2,15 @@ import Image from 'next/image'
 
 export default function Home() {
   return (
-    <div className="container mx-auto">
-      <nav class="bg-white border-gray-200 dark:bg-gray-900">
+    <div className="container mx-auto"
+    >
+      <nav class="bg-white border-gray-200 dark:bg-gray-900" style={
+        {
+          position:'sticky',
+          top: '0px',
+          left:'0px'
+        }
+      }>
         <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
           <a href="https://flowbite.com/" class="flex items-center">
             <img src="https://flowbite.com/docs/images/logo.svg" class="h-8 mr-3" alt="Flowbite Logo" />
