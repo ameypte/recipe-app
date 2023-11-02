@@ -41,7 +41,7 @@ export default function Home() {
         {/* tag line */}
         <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
           <div class="text-center">
-            <p class="mt-1 text-4xl font-extrabold text-gray-900 dark:text-white sm:text-5xl sm:tracking-tight lg:text-6xl">Find your favorite recipe</p>
+            <p class="mt-1 text-4xl font-extrabold text-gray-900 dark:text-white sm:text-5xl sm:tracking-tight lg:text-6xl">Find your Bhavesh favorite recipe</p>
             <p class="max-w-xl mt-5 mx-auto text-xl text-gray-500 dark:text-gray-400 mb-5">Search for your favorite recipe and find out how to make it at home.</p>
           </div>
         </div>
