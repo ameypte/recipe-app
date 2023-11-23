@@ -97,7 +97,7 @@ export default function Home() {
         </form>
       </div>
       {/* container to display recipes */}
-      <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 mt-10">
+      <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 m-10">
         <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {/*  map  */}
           {recipes.map((recipe) => (
