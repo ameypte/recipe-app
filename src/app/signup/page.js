@@ -29,9 +29,23 @@ export default function signup() {
     setAcceptTerms(e.target.checked);
   };
 
-  const handleSubmit = (e) => {
+  async function handleSubmit(e) {
     e.preventDefault();
-  };
+    const response = await fetch("/api/auth", {
+      method: "POST",
+      headers: {
+        "Content-Type": "applicatiom/json",
+      },
+      body: JSON.stringify({
+        username: username,
+        email: email,
+        password: password,
+      }),
+    });
+
+    const data = await response.json();
+    alert(data.message);
+  }
 
   return (
     <section className="bg-gray-50 dark:bg-gray-900">
@@ -153,7 +167,7 @@ export default function signup() {
                 </div>
               </div>
               <button
-                type="submit"
+                onClick={handleSubmit}
                 className="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
               >
                 Create an account
