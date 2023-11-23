@@ -1,6 +1,7 @@
 'use client'
 import RecipeCard from "@/components/RecipeCard"
 import { useEffect, useState } from "react"
+import Link from "next/link";
 
 export default function Home() {
 
@@ -10,7 +11,7 @@ export default function Home() {
 
   const [recipes, setRecipes] = useState([]);
 
-  const [a,setA] = useState();
+  const [a, setA] = useState();
 
   const getRecipes = async () => {
 
@@ -64,12 +65,14 @@ export default function Home() {
               </li>
             </ul>
           </div>
-          <button
-            type="button"
-            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-          >
-            Login/Register
-          </button>
+          <Link href="/login">
+            <button
+              type="button"
+              class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+            >
+              Login/Register
+            </button>
+          </Link>
         </div>
       </nav>
 
