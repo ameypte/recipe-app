@@ -1,7 +1,7 @@
 "use client";
 import RecipeCard from "@/components/RecipeCard";
 import { useEffect, useState } from "react";
-
+import Link from "next/link";
 
 export default function Home() {
   const [recipes, setRecipes] = useState([]);
