@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import MyRecipeCard from "@/components/MyRecipeCard";
 import Link from "next/link";
+
 function MyRecipe() {
   const [recipes, setRecipes] = useState([]);
   const [username, setUsername] = useState();
@@ -22,6 +23,7 @@ function MyRecipe() {
     const data = await responce.json();
     console.log(data);
     setRecipes(data);
+
   };
   return (
     <div>
@@ -128,7 +130,7 @@ function MyRecipe() {
                 type="button"
                 onClick={() => {
                   localStorage.removeItem("username");
-                  window.location.reload();
+                  router.push("/");
                 }}
                 className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
               >
@@ -156,7 +158,6 @@ function MyRecipe() {
             </p>
           </div>
         </div>
-
         <form className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 my-5">
           <label
             htmlFor="default-search"
@@ -197,24 +198,20 @@ function MyRecipe() {
             </button>
           </div>
         </form>
-
         {/* recipe card is horizontal */}
-        
-            {recipes.map((recipe) => {
-              if (localStorage.getItem("userId") == recipe.user_id) {
-                return (
-                  <MyRecipeCard
-                    recipeName={recipe.title}
-                    description={recipe.description}
-                    imageUrl={"https://www.allrecipes.com/thmb/fFW1o307WSqFFYQ3-QXYVpnFj6E=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/48727-Mikes-homemade-pizza-DDMFS-beauty-4x3-BG-2974-a7a9842c14e34ca699f3b7d7143256cf.jpg"}
-                  />
-                );
-              }
-            })}
-          
-
-
-
+        {recipes.map((recipe) => {
+          if (localStorage.getItem("userId") == recipe.user_id) {
+            return (
+              <MyRecipeCard
+                recipeName={recipe.title}
+                description={recipe.description}
+                imageUrl={
+                  "https://www.allrecipes.com/thmb/fFW1o307WSqFFYQ3-QXYVpnFj6E=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/48727-Mikes-homemade-pizza-DDMFS-beauty-4x3-BG-2974-a7a9842c14e34ca699f3b7d7143256cf.jpg"
+                }
+              />
+            );
+          }
+        })}
         {/* <MyRecipes
         recipeName={"Tomato Soup"}
         description={"A delicious soup made from tomatoes"}
