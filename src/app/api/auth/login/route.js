@@ -13,12 +13,11 @@ export const POST = async (req, res) => {
     values: [username, password],
   });
 
-  if (user.user_id === undefined) {
-    return NextResponse.json(
-      { message: "Invalid uername or password" },
-      { status: 400 }
-    );
+  if (user.length > 0) {
+    return NextResponse.json({ user: user }, { status: 200 });
   }
-
-  return NextResponse.json({ user: user }, { status: 200 });
+  return NextResponse.json(
+    { message: "Invalid uername or password" },
+    { status: 400 }
+  );
 };

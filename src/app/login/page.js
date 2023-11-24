@@ -25,7 +25,10 @@ export default function Login() {
     const data = await response.json();
     if (response.status === 400) {
       setMessage(data.message);
+      return;
     }
+
+    alert("Login Successfull");
   }
   return (
     <section className="bg-gray-50 dark:bg-gray-900">
@@ -53,11 +56,11 @@ export default function Login() {
             >
               {message && (
                 <div
-                  class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
+                  className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
                   role="alert"
                 >
-                  <strong class="font-bold">Error : </strong>
-                  <span class="block sm:inline">{message}</span>
+                  <strong className="font-bold">Error : </strong>
+                  <span className="block sm:inline">{message}</span>
                 </div>
               )}
 
