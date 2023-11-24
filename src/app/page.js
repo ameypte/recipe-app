@@ -1,7 +1,7 @@
 "use client";
 import RecipeCard from "@/components/RecipeCard";
 import { useEffect, useState } from "react";
-import NavBar from "@/components/NavBar";
+
 
 export default function Home() {
   const [recipes, setRecipes] = useState([]);
@@ -12,11 +12,7 @@ export default function Home() {
     getRecipes();
   }, []);
 
-<<<<<<< HEAD
-  const [recipes, setRecipes] = useState([]);
 
-=======
->>>>>>> ce837d784c6bfdabfe8248e4798d1fab4919eb60
   const getRecipes = async () => {
     const responce = await fetch("/api/recipes", {
       method: "GET",
@@ -29,9 +25,7 @@ export default function Home() {
   };
   return (
     <div className="container mx-auto">
-<<<<<<< HEAD
-      <NavBar />
-=======
+
       <nav
         className="bg-white border-gray-200 dark:bg-gray-900"
         style={{
@@ -154,7 +148,7 @@ export default function Home() {
         </div>
       </nav>
 
->>>>>>> ce837d784c6bfdabfe8248e4798d1fab4919eb60
+
       <div className="bg-white dark:bg-gray-900 py-16">
         {/* tag line */}
         <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
