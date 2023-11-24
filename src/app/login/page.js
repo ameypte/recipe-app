@@ -1,11 +1,14 @@
 "use client";
 import React, { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
   const [message, setMessage] = useState("");
+  const router = useRouter();
+
   async function handleSubmit(e) {
     e.preventDefault();
     console.log(username);
@@ -25,7 +28,16 @@ export default function Login() {
     const data = await response.json();
     if (response.status === 400) {
       setMessage(data.message);
+      return;
     }
+    console.log(data);
+    alert("Login Successfull");
+    // add username to document.cookie
+    localStorage.setItem("username", username);
+    localStorage.setItem("password", password);
+    localStorage.setItem("userId", data.user_id);
+    console.log(localStorage.getItem("username"));
+    router.push("/");
   }
   return (
     <section className="bg-gray-50 dark:bg-gray-900">
@@ -53,11 +65,11 @@ export default function Login() {
             >
               {message && (
                 <div
-                  class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
+                  className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
                   role="alert"
                 >
-                  <strong class="font-bold">Error : </strong>
-                  <span class="block sm:inline">{message}</span>
+                  <strong className="font-bold">Error : </strong>
+                  <span className="block sm:inline">{message}</span>
                 </div>
               )}
 
