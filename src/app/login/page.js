@@ -26,17 +26,20 @@ export default function Login() {
     });
 
     const data = await response.json();
+    console.log(data);
+    
+    const userId = data.user[0].user_id;
+    console.log(userId);
+
     if (response.status === 400) {
       setMessage(data.message);
       return;
     }
-    console.log(data);
-    alert("Login Successfull");
-    // add username to document.cookie
+
     localStorage.setItem("username", username);
     localStorage.setItem("password", password);
-    localStorage.setItem("userId", data.user_id);
-    console.log(localStorage.getItem("username"));
+    localStorage.setItem("userId", userId);
+
     router.push("/");
   }
   return (

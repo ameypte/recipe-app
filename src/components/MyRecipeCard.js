@@ -1,6 +1,6 @@
-function MyRecipes({ recipeName, description }) {
+function MyRecipeCard({ recipeName, description }) {
   return (
-    <div className="w-100 flex flex-col items-center my-10 p-4">
+    <div className="w-100 flex flex-col items-center my-10">
       <a
         href="#"
         class="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700"
@@ -54,4 +54,4 @@ function MyRecipes({ recipeName, description }) {
     </div>
   );
 }
-export default MyRecipes;
+export default MyRecipeCard;
