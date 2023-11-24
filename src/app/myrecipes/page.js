@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import MyRecipeCard from "@/components/MyRecipeCard";
 import Link from "next/link";
+import { IoMdAdd } from "react-icons/io";
+
 
 function MyRecipe() {
   const [recipes, setRecipes] = useState([]);
@@ -198,6 +200,17 @@ function MyRecipe() {
             </button>
           </div>
         </form>
+        {/* add recipe button to right*/}
+        <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 mb-5 flex justify-end">
+          <button
+            type="button"
+            className="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-gree-700 focus:outline-none dark:focus:ring-green-800"
+          >
+            <IoMdAdd className="inline-block mr-2 " size={18} />
+            Add Recipe
+          </button>
+        </div>
+
         {/* recipe card is horizontal */}
         {recipes.map((recipe) => {
           if (localStorage.getItem("userId") == recipe.user_id) {
@@ -212,30 +225,6 @@ function MyRecipe() {
             );
           }
         })}
-        {/* <MyRecipes
-        recipeName={"Tomato Soup"}
-        description={"A delicious soup made from tomatoes"}
-      />
-      ;
-      <MyRecipes
-        recipeName={"Banana Smoothie"}
-        description={"A refreshing smoothie made from bananas"}
-      /> */}
-        ;
-        {/* {recipes.filter((recipe) => {
-        console.log(localStorage.getItem("userId"));
-        console.log(localStorage.getItem("username"));
-
-        if (localStorage.getItem("userId") === recipe.user_id) {
-          return (
-            <MyRecipes
-              recipeName={recipe.title}
-              description={recipe.description}
-            />
-          );
-        }
-      })} */}
-        ;
       </div>
     </div>
   );
