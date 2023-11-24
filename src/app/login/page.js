@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-
 export default function Login() {
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
@@ -31,11 +30,13 @@ export default function Login() {
       setMessage(data.message);
       return;
     }
-
+    console.log(data);
     alert("Login Successfull");
     // add username to document.cookie
     localStorage.setItem("username", username);
     localStorage.setItem("password", password);
+    localStorage.setItem("userId", data.user_id);
+    console.log(localStorage.getItem("username"));
     router.push("/");
   }
   return (

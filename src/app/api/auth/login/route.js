@@ -14,6 +14,7 @@ export const POST = async (req, res) => {
   });
 
   if (user.length > 0) {
+    console.log(user.user_id);
     return NextResponse.json({ user: user }, { status: 200 });
   }
   return NextResponse.json(
