@@ -1,11 +1,15 @@
 "use client";
 import React, { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+
 
 export default function Login() {
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
   const [message, setMessage] = useState("");
+  const router = useRouter();
+
   async function handleSubmit(e) {
     e.preventDefault();
     console.log(username);
@@ -29,6 +33,10 @@ export default function Login() {
     }
 
     alert("Login Successfull");
+    // add username to document.cookie
+    localStorage.setItem("username", username);
+    localStorage.setItem("password", password);
+    router.push("/");
   }
   return (
     <section className="bg-gray-50 dark:bg-gray-900">
