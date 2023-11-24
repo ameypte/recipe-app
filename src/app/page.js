@@ -32,7 +32,8 @@ export default function Home() {
         {
           position: 'sticky',
           top: '0px',
-          left: '0px'
+          left: '0px',
+          zIndex: 1000
         }
       }>
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">

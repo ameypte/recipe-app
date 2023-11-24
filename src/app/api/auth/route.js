@@ -1,9 +1,6 @@
 import { NextResponse } from "next/server";
 import { query } from "@/lib/db";
 
-export const GET = async (req, res) => {
-  return NextResponse.json({ message: "hello world" });
-};
 
 export const POST = async (req, res) => {
   let message, status;
