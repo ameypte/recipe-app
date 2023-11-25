@@ -16,10 +16,7 @@ export const POST = async (req, res) => {
   if (ingredients.length > 0) {
     return NextResponse.json({ ingredients: ingredients }, { status: 200 });
   }
-  return NextResponse.json(
-    { message: "Invalid uername or password" },
-    { status: 400 }
-  );
+  return NextResponse.json({ message: "Invalid category Id" }, { status: 400 });
 };
 
 export const GET = async (req, res) => {
@@ -34,7 +31,7 @@ export const GET = async (req, res) => {
     );
   }
   return NextResponse.json(
-    { message: "Invalid uername or password" },
+    { message: "Cant Fetch Ingredients_category" },
     { status: 400 }
   );
 };
