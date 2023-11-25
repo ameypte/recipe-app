@@ -8,7 +8,7 @@ export default function AddRecipe() {
   const [description, setDescription] = useState("");
   const [instructions, setInstructions] = useState("");
   const [servings, setServings] = useState("");
-  const [recipe_category, setRecipeCategory] = useState("");
+  const [recipe_category, setRecipeCategory] = useState([]);
   const [recipeCategories, setRecipeCategories] = useState([]);
   const [ingredients, setIngredients] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -19,6 +19,7 @@ export default function AddRecipe() {
 
   useEffect(() => {
     getRecipeCategories();
+    getRecipeIngredients();
   }, []);
 
   const getRecipeCategories = async () => {
@@ -32,7 +33,17 @@ export default function AddRecipe() {
     console.log(data);
     setRecipeCategories(data.ingredients_category);
   };
-
+  const getRecipeIngredients = async () => {
+    const response = await fetch("/api/recipes/category", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await response.json();
+    console.log(data);
+    setRecipeCategory(data);
+  };
   const getIngredients = async (category_id) => {
     const response = await fetch("/api/ingredients", {
       method: "POST",
@@ -46,9 +57,10 @@ export default function AddRecipe() {
     setIngredients(data.ingredients);
   };
 
-  const router = useRouter();
   const handleRecipeChange = (e) => {
-    setRecipeCategory(e.target.value);
+    getRecipeIngredients();
+
+    setRecipeCategory(e.target.options[e.target.selectedIndex].text);
   };
   const handleCategoryChange = (e) => {
     getIngredients(e.target.value);
@@ -113,12 +125,6 @@ export default function AddRecipe() {
     setSelectedIngredient("");
     setQuantity("");
     setUnit("");
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Handle submission logic here
-    // For instance, you can send the recipe data to a server or perform any necessary actions
   };
 
   return (
@@ -213,10 +219,10 @@ export default function AddRecipe() {
                     name="category1"
                     className="w-full bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     required
-                    onChange={(e) => handleCategoryChange(e)}
+                    onChange={(e) => handleRecipeChange(e)}
                   >
                     <option value="">Select a Recipe Category</option>
-                    {recipeCategories.map((category) => (
+                    {recipe_category.map((category) => (
                       <option
                         value={category.category_id}
                         key={category.category_id}
