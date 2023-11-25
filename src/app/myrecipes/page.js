@@ -90,19 +90,21 @@ function MyRecipe() {
         </div>
 
         {/* recipe card is horizontal */}
-        {recipes.map((recipe) => {
-          if (localStorage.getItem("userId") == recipe.user_id) {
-            return (
-              <MyRecipeCard
-                recipeName={recipe.title}
-                description={recipe.description}
-                imageUrl={
-                  "https://www.allrecipes.com/thmb/fFW1o307WSqFFYQ3-QXYVpnFj6E=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/48727-Mikes-homemade-pizza-DDMFS-beauty-4x3-BG-2974-a7a9842c14e34ca699f3b7d7143256cf.jpg"
-                }
-              />
-            );
-          }
-        })}
+        <div className="w-full flex flex-col items-center my-5 space-y-5">
+          {recipes.map((recipe) => {
+            if (localStorage.getItem("userId") == recipe.user_id) {
+              return (
+                <MyRecipeCard
+                  recipeName={recipe.title}
+                  description={recipe.description}
+                  imageUrl={
+                    "https://www.allrecipes.com/thmb/fFW1o307WSqFFYQ3-QXYVpnFj6E=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/48727-Mikes-homemade-pizza-DDMFS-beauty-4x3-BG-2974-a7a9842c14e34ca699f3b7d7143256cf.jpg"
+                  }
+                />
+              );
+            }
+          })}
+        </div>
       </div>
     </div>
   );
