@@ -8,6 +8,7 @@ export default function AddRecipe() {
   const [description, setDescription] = useState("");
   const [instructions, setInstructions] = useState("");
   const [servings, setServings] = useState("");
+  const [recipe_category, setRecipeCategory] = useState("");
   const [recipeCategories, setRecipeCategories] = useState([]);
   const [ingredients, setIngredients] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -19,7 +20,6 @@ export default function AddRecipe() {
   useEffect(() => {
     getRecipeCategories();
   }, []);
-
 
   const getRecipeCategories = async () => {
     const response = await fetch("/api/ingredients", {
@@ -47,7 +47,9 @@ export default function AddRecipe() {
   };
 
   const router = useRouter();
-
+  const handleRecipeChange = (e) => {
+    setRecipeCategory(e.target.value);
+  };
   const handleCategoryChange = (e) => {
     getIngredients(e.target.value);
     // set selected category as the text of the selected option
@@ -92,12 +94,15 @@ export default function AddRecipe() {
       return;
     }
 
-    setRecipeIngredientsTable([...recipeIngredientsTable, {
-      ingredient_name: selectedIngredient,
-      ingredient_category: selectedCategory,
-      quantity: quantity,
-      unit: unit
-    }]);
+    setRecipeIngredientsTable([
+      ...recipeIngredientsTable,
+      {
+        ingredient_name: selectedIngredient,
+        ingredient_category: selectedCategory,
+        quantity: quantity,
+        unit: unit,
+      },
+    ]);
 
     console.log(recipeIngredientsTable);
 
@@ -108,7 +113,6 @@ export default function AddRecipe() {
     setSelectedIngredient("");
     setQuantity("");
     setUnit("");
-
   };
 
   const handleSubmit = (e) => {
@@ -125,9 +129,7 @@ export default function AddRecipe() {
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
               Add Recipe
             </h1>
-            <div
-              className="space-y-4 md:space-y-6"
-            >
+            <div className="space-y-4 md:space-y-6">
               <div>
                 <label
                   htmlFor="recipeName"
@@ -180,26 +182,74 @@ export default function AddRecipe() {
                   required
                 />
               </div>
-              <div>
+              {/* <div>
                 <label
-                  htmlFor="servings"
+                  htmlFor="recipecategory"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
-                  Servings
+                  Recipe Category
                 </label>
                 <input
-                  value={servings}
-                  onChange={handleServingsChange}
+                  value={recipe_category}
+                  onChange={handleCategoryChange}
                   type="text"
-                  name="servings"
-                  id="servings"
+                  name="recipecategory"
+                  id="recipe"
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="Enter servings"
+                  placeholder="Enter Recipe Category"
                   required
                 />
+              </div> */}
+              <div className="flex flex-row space-x-4 justify-center w-full">
+                <div className="flex flex-col flex-grow">
+                  <label
+                    htmlFor="category1"
+                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >
+                    Category
+                  </label>
+                  <select
+                    id="category1"
+                    name="category1"
+                    className="w-full bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    required
+                    onChange={(e) => handleCategoryChange(e)}
+                  >
+                    <option value="">Select a Recipe Category</option>
+                    {recipeCategories.map((category) => (
+                      <option
+                        value={category.category_id}
+                        key={category.category_id}
+                      >
+                        {category.category_name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="flex-grow">
+                  {" "}
+                  {/* Updated style */}
+                  <label
+                    htmlFor="servings"
+                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >
+                    Servings
+                  </label>
+                  <input
+                    value={servings}
+                    onChange={handleServingsChange}
+                    type="text"
+                    name="servings"
+                    id="servings"
+                    className="w-full bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Enter servings"
+                    required
+                  />
+                </div>
               </div>
-              <form className="" action="#" id="ingredients-form">
-                <div className="flex flex-row space-x-4 justify-center">
+
+              <form className="w-full" action="#" id="ingredients-form">
+                <div className="flex flex-row justify-around flex-grow">
                   <div>
                     <label
                       htmlFor="category"
@@ -215,11 +265,11 @@ export default function AddRecipe() {
                       onChange={(e) => handleCategoryChange(e)}
                     >
                       <option value="">Select a category</option>
-                      {
-                        recipeCategories.map((category) => (
-                          <option value={category.category_id}>{category.category_name}</option>
-                        ))
-                      }
+                      {recipeCategories.map((category) => (
+                        <option value={category.category_id}>
+                          {category.category_name}
+                        </option>
+                      ))}
                     </select>
                   </div>
 
@@ -236,15 +286,17 @@ export default function AddRecipe() {
                       className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       required
                       onChange={(e) =>
-                        setSelectedIngredient(e.target.options[e.target.selectedIndex].text)
+                        setSelectedIngredient(
+                          e.target.options[e.target.selectedIndex].text
+                        )
                       }
                     >
                       <option value="">Select an ingredient</option>
-                      {
-                        ingredients.map((ingredient) => (
-                          <option value={ingredient.ingredient_id}>{ingredient.name}</option>
-                        ))
-                      }
+                      {ingredients.map((ingredient) => (
+                        <option value={ingredient.ingredient_id}>
+                          {ingredient.name}
+                        </option>
+                      ))}
                     </select>
                   </div>
 
@@ -332,42 +384,48 @@ export default function AddRecipe() {
                       </tr>
                     </thead>
                     <tbody>
-                      {
-                        recipeIngredientsTable.map((ingredient) => (
-                          <tr class="bg-white dark:bg-gray-700">
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-200">
-                              {ingredient.ingredient_name}
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                              {ingredient.ingredient_category}
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                              {ingredient.quantity}
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                              {ingredient.unit}
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                              <span
-                                class="font-medium text-red-600 dark:text-red-500 hover:underline"
-
-                                onClick={() => {
-                                  // ask user to confirm deletion
-                                  if (!confirm("Are you sure you want to delete this ingredient?")) {
-                                    return;
-                                  }
-                                  const newRecipeIngredientsTable = recipeIngredientsTable.filter(
-                                    (item) => item.ingredient_name !== ingredient.ingredient_name
+                      {recipeIngredientsTable.map((ingredient) => (
+                        <tr class="bg-white dark:bg-gray-700">
+                          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-200">
+                            {ingredient.ingredient_name}
+                          </td>
+                          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                            {ingredient.ingredient_category}
+                          </td>
+                          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                            {ingredient.quantity}
+                          </td>
+                          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                            {ingredient.unit}
+                          </td>
+                          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                            <span
+                              class="font-medium text-red-600 dark:text-red-500 hover:underline"
+                              onClick={() => {
+                                // ask user to confirm deletion
+                                if (
+                                  !confirm(
+                                    "Are you sure you want to delete this ingredient?"
+                                  )
+                                ) {
+                                  return;
+                                }
+                                const newRecipeIngredientsTable =
+                                  recipeIngredientsTable.filter(
+                                    (item) =>
+                                      item.ingredient_name !==
+                                      ingredient.ingredient_name
                                   );
-                                  setRecipeIngredientsTable(newRecipeIngredientsTable);
-                                }}
-                              >
-                                Delete
-                              </span>
-                            </td>
-                          </tr>
-                        ))
-                      }
+                                setRecipeIngredientsTable(
+                                  newRecipeIngredientsTable
+                                );
+                              }}
+                            >
+                              Delete
+                            </span>
+                          </td>
+                        </tr>
+                      ))}
                     </tbody>
                   </table>
                 </div>
@@ -393,6 +451,6 @@ export default function AddRecipe() {
           </div>
         </div>
       </div>
-    </section >
+    </section>
   );
 }
