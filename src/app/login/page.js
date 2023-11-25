@@ -28,13 +28,13 @@ export default function Login() {
     const data = await response.json();
     console.log(data);
     
-    const userId = data.user[0].user_id;
-    console.log(userId);
-
+    
     if (response.status === 400) {
       setMessage(data.message);
       return;
     }
+    const userId = data.user[0].user_id;
+    console.log(userId);
 
     localStorage.setItem("username", username);
     localStorage.setItem("password", password);
