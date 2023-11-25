@@ -1,8 +1,16 @@
+"use client";
 import React from "react";
 import Link from "next/link";
-
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function NavBar() {
+  const [username, setUsername] = useState();
+  const router = useRouter();
+
+  useEffect(() => {
+    setUsername(localStorage.getItem("username"));
+  }, []);
   return (
     <nav
       className="bg-white border-gray-200 dark:bg-gray-900"
@@ -55,16 +63,34 @@ export default function NavBar() {
                 href="#"
                 className="block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white md:dark:text-blue-500"
                 aria-current="page"
+                onClick={() => {
+                  router.push("/");
+                }}
               >
                 Home
               </a>
             </li>
+            {username ? (
+              <Link href="/myrecipes">
+                <li>
+                  <a
+                    href="#"
+                    className="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                  >
+                    My Recipes
+                  </a>
+                </li>
+              </Link>
+            ) : null}
             <li>
               <a
                 href="#"
                 className="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                onClick={() => {
+                  router.push("/recipe-wizard");
+                }}
               >
-                My recipes
+                Recipe Wizard
               </a>
             </li>
             <li>
@@ -72,15 +98,7 @@ export default function NavBar() {
                 href="#"
                 className="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
               >
-                Recipe wizard
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                className="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
-              >
-                About us
+                About
               </a>
             </li>
             <li>
@@ -93,14 +111,30 @@ export default function NavBar() {
             </li>
           </ul>
         </div>
-        <Link href="/login">
-          <button
-            type="button"
-            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-          >
-            Login/Register
-          </button>
-        </Link>
+        {username ? (
+          <div className="flex items-center space-x-4">
+            <p className="text-gray-900 dark:text-white">Welcome {username}!</p>
+            <button
+              type="button"
+              onClick={() => {
+                localStorage.removeItem("username");
+                window.location.reload();
+              }}
+              className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+            >
+              Logout
+            </button>
+          </div>
+        ) : (
+          <Link href="/login">
+            <button
+              type="button"
+              class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+            >
+              Login/Register
+            </button>
+          </Link>
+        )}
       </div>
     </nav>
   );
