@@ -26,7 +26,7 @@ export default function Home() {
   return (
     <div className="container mx-auto">
 
-      <NavBar/>
+      <NavBar />
 
       <div className="bg-white dark:bg-gray-900 py-16">
         {/* tag line */}
@@ -83,21 +83,22 @@ export default function Home() {
             </button>
           </div>
         </form>
-      </div>
-      {/* container to display recipes */}
-      <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 m-10">
-        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {/*  map  */}
-          {recipes.map((recipe) => (
-            <RecipeCard
-              recipeName={recipe.title}
-              description={recipe.description}
-              imageUrl={
-                "https://www.allrecipes.com/thmb/fFW1o307WSqFFYQ3-QXYVpnFj6E=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/48727-Mikes-homemade-pizza-DDMFS-beauty-4x3-BG-2974-a7a9842c14e34ca699f3b7d7143256cf.jpg"
-              }
-              cookTime={recipe.cook_time}
-            />
-          ))}
+
+        {/* container to display recipes */}
+        <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 m-10">
+          <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {/*  map  */}
+            {recipes.map((recipe) => (
+              <RecipeCard
+                recipeName={recipe.title}
+                description={recipe.description}
+                imageUrl={
+                  "https://www.allrecipes.com/thmb/fFW1o307WSqFFYQ3-QXYVpnFj6E=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/48727-Mikes-homemade-pizza-DDMFS-beauty-4x3-BG-2974-a7a9842c14e34ca699f3b7d7143256cf.jpg"
+                }
+                cookTime={recipe.cook_time}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </div>

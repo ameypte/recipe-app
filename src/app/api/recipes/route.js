@@ -18,30 +18,7 @@ export const GET = async (req, res) => {
 
 export const POST = async (req, res) => {
     try {
-        // input:
-        // {
-        //     "title": "test recipe",
-        //     "description": "test description",
-        //     "instructions": "test instructions",
-        //     "cook_time": 10,
-        //     "servings": 2,
-        //     "user_id": 1,
-        //     "recipe_category_id": 1,
-        //     "req_ingredients": [
-        //         {
-        //             "ingredient_id": 1,
-        //             "quantity": 1,
-        //             "measurement_unit": "cup"
-        //         },
-        //         {
-        //             "ingredient_id": 2,
-        //             "quantity": 2,
-        //             "measurement_unit": "cup"
-        //         }
-        //     ]
-        // }
-
-        const data = await req.json();
+               const data = await req.json();
 
         console.log(data.title);
         console.log(data.description);

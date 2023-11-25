@@ -6,7 +6,7 @@ function MyRecipeCard({ recipeName, description, isLiked }) {
   const [hover, setHover] = useState(false);
 
   return (
-    <div className="w-full flex flex-col items-center my-5">
+    
       <a
         href="#"
         className="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row w-3/4 hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700"
@@ -45,7 +45,7 @@ function MyRecipeCard({ recipeName, description, isLiked }) {
           </button>
         </div>
       </a>
-    </div>
+    
   );
 }
 export default MyRecipeCard;

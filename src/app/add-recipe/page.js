@@ -2,16 +2,23 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import NavBar from "@/components/NavBar";
 
 export default function AddRecipe() {
+  const router = useRouter();
+
   const [recipeName, setRecipeName] = useState("");
   const [description, setDescription] = useState("");
   const [instructions, setInstructions] = useState("");
   const [servings, setServings] = useState("");
-  const [recipe_category, setRecipeCategory] = useState([]);
-  const [recipeCategories, setRecipeCategories] = useState([]);
+  const [cookTime, setCookTime] = useState("");
+
+  const [recipeCategory, setRecipeCategory] = useState([]);
+  const [selectedRecipeCategory, setSelectedRecipeCategory] = useState("");
+
+  const [ingredientsCategories, setIngredientsCategories] = useState([]);
   const [ingredients, setIngredients] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedIngridentCategory, setSelectedIngridentCategory] = useState("");
   const [selectedIngredient, setSelectedIngredient] = useState("");
   const [quantity, setQuantity] = useState("");
   const [unit, setUnit] = useState("");
@@ -22,7 +29,99 @@ export default function AddRecipe() {
     getRecipeIngredients();
   }, []);
 
-  const getRecipeCategories = async () => {
+  const handleSubmit = async () => {
+    // validate input
+    if (recipeName === "") {
+      alert("Please enter a recipe name");
+      return;
+    }
+    if (description === "") {
+      alert("Please enter a description");
+      return;
+    }
+    if (instructions === "") {
+      alert("Please enter instructions");
+      return;
+    }
+    if (servings === "") {
+      alert("Please enter servings");
+      return;
+    }
+    if (selectedRecipeCategory === "") {
+      alert("Please select a recipe category");
+      return;
+    }
+    if (recipeIngredientsTable.length === 0) {
+      alert("Please add ingredients");
+      return;
+    }
+
+    // sample input
+    // input:
+    // {
+    //     "title": "test recipe",
+    //     "description": "test description",
+    //     "instructions": "test instructions",
+    //     "cook_time": 10,
+    //     "servings": 2,
+    //     "user_id": 1,
+    //     "recipe_category_id": 1,
+    //     "req_ingredients": [
+    //         {
+    //             "ingredient_id": 1,
+    //             "quantity": 1,
+    //             "measurement_unit": "cup"
+    //         },
+    //         {
+    //             "ingredient_id": 2,
+    //             "quantity": 2,
+    //             "measurement_unit": "cup"
+    //         }
+    //     ]
+    // }
+
+    const req_ingredients = recipeIngredientsTable.map((ingredient) => ({
+      ingredient_id: ingredient.ingredient_id,
+      quantity: ingredient.quantity,
+      measurement_unit: ingredient.unit,
+    }));
+
+    const data = {
+      title: recipeName,
+      description: description,
+      instructions: instructions,
+      cook_time: cookTime,
+      servings: servings,
+      user_id: localStorage.getItem("userId"),
+      recipe_category_id: selectedRecipeCategory,
+      req_ingredients: req_ingredients,
+    };
+
+    console.log(data);
+
+    const response = await fetch("/api/recipes", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    const responseData = await response.json();
+    console.log(responseData);
+
+    if (response.status === 201) {
+      alert("Recipe added successfully");
+      router.push("/");
+    }
+
+    if (response.status === 500) {
+      alert(responseData.message);
+    }
+  }
+
+
+  const getRecipeIngredients = async () => {
     const response = await fetch("/api/ingredients", {
       method: "GET",
       headers: {
@@ -31,9 +130,10 @@ export default function AddRecipe() {
     });
     const data = await response.json();
     console.log(data);
-    setRecipeCategories(data.ingredients_category);
+    setIngredientsCategories(data.ingredients_category);
   };
-  const getRecipeIngredients = async () => {
+
+  const getRecipeCategories = async () => {
     const response = await fetch("/api/recipes/category", {
       method: "GET",
       headers: {
@@ -44,6 +144,7 @@ export default function AddRecipe() {
     console.log(data);
     setRecipeCategory(data);
   };
+
   const getIngredients = async (category_id) => {
     const response = await fetch("/api/ingredients", {
       method: "POST",
@@ -57,16 +158,16 @@ export default function AddRecipe() {
     setIngredients(data.ingredients);
   };
 
-  const handleRecipeChange = (e) => {
-    getRecipeIngredients();
-
-    setRecipeCategory(e.target.options[e.target.selectedIndex].text);
+  const handleRecipeCategoryChange = (e) => {
+    setSelectedRecipeCategory(e.target.value);
   };
+
+
   const handleCategoryChange = (e) => {
     getIngredients(e.target.value);
     // set selected category as the text of the selected option
     const selectedCategoryText = e.target.options[e.target.selectedIndex].text;
-    setSelectedCategory(() => selectedCategoryText);
+    setSelectedIngridentCategory(() => selectedCategoryText);
   };
 
   const handleRecipeNameChange = (e) => {
@@ -89,7 +190,7 @@ export default function AddRecipe() {
     e.preventDefault();
 
     // validate input
-    if (selectedCategory === "") {
+    if (selectedIngridentCategory === "") {
       alert("Please select a category");
       return;
     }
@@ -109,8 +210,12 @@ export default function AddRecipe() {
     setRecipeIngredientsTable([
       ...recipeIngredientsTable,
       {
+        ingredient_id: ingredients.find(
+          (ingredient) => ingredient.name === selectedIngredient
+        ).ingredient_id,
+
         ingredient_name: selectedIngredient,
-        ingredient_category: selectedCategory,
+        ingredient_category: selectedIngridentCategory,
         quantity: quantity,
         unit: unit,
       },
@@ -121,13 +226,15 @@ export default function AddRecipe() {
     // clear input
     const ingredientsForm = document.getElementById("ingredients-form");
     ingredientsForm.reset();
-    setSelectedCategory("");
+    setSelectedIngridentCategory("");
     setSelectedIngredient("");
     setQuantity("");
     setUnit("");
   };
 
   return (
+    <>
+    <NavBar />
     <section className="bg-gray-50 dark:bg-gray-900">
       <div className="py-10 px-28">
         <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 xl:p-0 dark:bg-gray-800 dark:border-gray-700">
@@ -188,41 +295,23 @@ export default function AddRecipe() {
                   required
                 />
               </div>
-              {/* <div>
-                <label
-                  htmlFor="recipecategory"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  Recipe Category
-                </label>
-                <input
-                  value={recipe_category}
-                  onChange={handleCategoryChange}
-                  type="text"
-                  name="recipecategory"
-                  id="recipe"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="Enter Recipe Category"
-                  required
-                />
-              </div> */}
               <div className="flex flex-row space-x-4 justify-center w-full">
                 <div className="flex flex-col flex-grow">
                   <label
                     htmlFor="category1"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    Category
+                    Recipe Category
                   </label>
                   <select
                     id="category1"
                     name="category1"
                     className="w-full bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     required
-                    onChange={(e) => handleRecipeChange(e)}
+                    onChange={(e) => handleRecipeCategoryChange(e)}
                   >
                     <option value="">Select a Recipe Category</option>
-                    {recipe_category.map((category) => (
+                    {recipeCategory.map((category) => (
                       <option
                         value={category.category_id}
                         key={category.category_id}
@@ -233,8 +322,6 @@ export default function AddRecipe() {
                   </select>
                 </div>
                 <div className="flex-grow">
-                  {" "}
-                  {/* Updated style */}
                   <label
                     htmlFor="servings"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -252,6 +339,27 @@ export default function AddRecipe() {
                     required
                   />
                 </div>
+                <div className="flex-grow">
+                  <label
+                    htmlFor="cook"
+                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >
+                    Cooking Time
+                  </label>
+                  <input
+                    value={cookTime}
+                    onChange={(e) => {
+                      setCookTime(e.target.value)
+                    }}
+                    type="text"
+                    name="cook"
+                    id="cook"
+                    className="w-full bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Enter cook time"
+                    required
+                  />
+                </div>
+
               </div>
 
               <form className="w-full" action="#" id="ingredients-form">
@@ -261,7 +369,7 @@ export default function AddRecipe() {
                       htmlFor="category"
                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >
-                      Category
+                      Ingredients Category
                     </label>
                     <select
                       id="category"
@@ -271,7 +379,7 @@ export default function AddRecipe() {
                       onChange={(e) => handleCategoryChange(e)}
                     >
                       <option value="">Select a category</option>
-                      {recipeCategories.map((category) => (
+                      {ingredientsCategories.map((category) => (
                         <option value={category.category_id}>
                           {category.category_name}
                         </option>
@@ -441,6 +549,7 @@ export default function AddRecipe() {
                 <button
                   type="button"
                   className="text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+                  onClick={handleSubmit}
                 >
                   Save Recipe
                 </button>
@@ -458,5 +567,7 @@ export default function AddRecipe() {
         </div>
       </div>
     </section>
+    </>
+    
   );
 }
