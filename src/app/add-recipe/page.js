@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
@@ -8,22 +8,107 @@ export default function AddRecipe() {
   const [description, setDescription] = useState("");
   const [instructions, setInstructions] = useState("");
   const [servings, setServings] = useState("");
+  const [recipeCategories, setRecipeCategories] = useState([]);
+  const [ingredients, setIngredients] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedIngredient, setSelectedIngredient] = useState("");
+  const [quantity, setQuantity] = useState("");
+  const [unit, setUnit] = useState("");
+  const [recipeIngredientsTable, setRecipeIngredientsTable] = useState([]);
+
+  useEffect(() => {
+    getRecipeCategories();
+  }, []);
+
+
+  const getRecipeCategories = async () => {
+    const response = await fetch("/api/ingredients", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await response.json();
+    console.log(data);
+    setRecipeCategories(data.ingredients_category);
+  };
+
+  const getIngredients = async (category_id) => {
+    const response = await fetch("/api/ingredients", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ category_id }),
+    });
+    const data = await response.json();
+    console.log(data);
+    setIngredients(data.ingredients);
+  };
+
   const router = useRouter();
 
+  const handleCategoryChange = (e) => {
+    getIngredients(e.target.value);
+    // set selected category as the text of the selected option
+    const selectedCategoryText = e.target.options[e.target.selectedIndex].text;
+    setSelectedCategory(() => selectedCategoryText);
+  };
+
   const handleRecipeNameChange = (e) => {
-    setRecipeName(e.target.value);
+    setRecipeName(() => e.target.value);
   };
 
   const handleDescriptionChange = (e) => {
-    setDescription(e.target.value);
+    setDescription(() => e.target.value);
   };
 
   const handleInstructionsChange = (e) => {
-    setInstructions(e.target.value);
+    setInstructions(() => e.target.value);
   };
 
   const handleServingsChange = (e) => {
-    setServings(e.target.value);
+    setServings(() => e.target.value);
+  };
+
+  const handleAddIngredient = (e) => {
+    e.preventDefault();
+
+    // validate input
+    if (selectedCategory === "") {
+      alert("Please select a category");
+      return;
+    }
+    if (selectedIngredient === "") {
+      alert("Please select an ingredient");
+      return;
+    }
+    if (quantity === "") {
+      alert("Please enter a quantity");
+      return;
+    }
+    if (unit === "") {
+      alert("Please select a unit");
+      return;
+    }
+
+    setRecipeIngredientsTable([...recipeIngredientsTable, {
+      ingredient_name: selectedIngredient,
+      ingredient_category: selectedCategory,
+      quantity: quantity,
+      unit: unit
+    }]);
+
+    console.log(recipeIngredientsTable);
+
+    // clear input
+    const ingredientsForm = document.getElementById("ingredients-form");
+    ingredientsForm.reset();
+    setSelectedCategory("");
+    setSelectedIngredient("");
+    setQuantity("");
+    setUnit("");
+
   };
 
   const handleSubmit = (e) => {
@@ -40,10 +125,8 @@ export default function AddRecipe() {
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
               Add Recipe
             </h1>
-            <form
+            <div
               className="space-y-4 md:space-y-6"
-              action="#"
-              onSubmit={handleSubmit}
             >
               <div>
                 <label
@@ -115,95 +198,109 @@ export default function AddRecipe() {
                   required
                 />
               </div>
-              <div className="flex flex-row space-x-4 justify-center">
-                <div>
-                  <label
-                    htmlFor="category"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    Category
-                  </label>
-                  <select
-                    id="category"
-                    name="category"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    required
-                  >
-                    <option value="">Select a category</option>
-                    <option value="breakfast">Breakfast</option>
-                    <option value="lunch">Lunch</option>
-                    <option value="dinner">Dinner</option>
-                    <option value="dessert">Dessert</option>
-                  </select>
-                </div>
+              <form className="" action="#" id="ingredients-form">
+                <div className="flex flex-row space-x-4 justify-center">
+                  <div>
+                    <label
+                      htmlFor="category"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >
+                      Category
+                    </label>
+                    <select
+                      id="category"
+                      name="category"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      required
+                      onChange={(e) => handleCategoryChange(e)}
+                    >
+                      <option value="">Select a category</option>
+                      {
+                        recipeCategories.map((category) => (
+                          <option value={category.category_id}>{category.category_name}</option>
+                        ))
+                      }
+                    </select>
+                  </div>
 
-                <div>
-                  <label
-                    htmlFor="ingredients"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    Ingredients
-                  </label>
-                  <select
-                    id="ingredients"
-                    name="ingredients"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    required
-                  >
-                    <option value="">Select an ingredient</option>
-                    <option value="eggs">Eggs</option>
-                    <option value="bread">Bread</option>
-                    <option value="milk">Milk</option>
-                    <option value="chicken">Chicken</option>
-                  </select>
-                </div>
+                  <div>
+                    <label
+                      htmlFor="ingredients"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >
+                      Ingredients
+                    </label>
+                    <select
+                      id="ingredients"
+                      name="ingredients"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      required
+                      onChange={(e) =>
+                        setSelectedIngredient(e.target.options[e.target.selectedIndex].text)
+                      }
+                    >
+                      <option value="">Select an ingredient</option>
+                      {
+                        ingredients.map((ingredient) => (
+                          <option value={ingredient.ingredient_id}>{ingredient.name}</option>
+                        ))
+                      }
+                    </select>
+                  </div>
 
-                <div>
-                  <label
-                    htmlFor="quantity"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    Quantity
-                  </label>
-                  <input
-                    type="number"
-                    name="quantity"
-                    id="quantity"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Enter quantity"
-                    required
-                  />
-                </div>
+                  <div>
+                    <label
+                      htmlFor="quantity"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >
+                      Quantity
+                    </label>
+                    <input
+                      type="number"
+                      name="quantity"
+                      id="quantity"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      placeholder="Enter quantity"
+                      required
+                      onChange={(e) => setQuantity(e.target.value)}
+                    />
+                  </div>
 
-                <div>
-                  <label
-                    htmlFor="unit"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    Unit
-                  </label>
-                  <select
-                    id="unit"
-                    name="unit"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    required
-                  >
-                    <option value="">Select a unit</option>
-                    <option value="eggs">Teaspoon</option>
-                    <option value="bread">cup</option>
-                    <option value="milk">grams</option>
-                    <option value="chicken">units</option>
-                  </select>
+                  <div>
+                    <label
+                      htmlFor="unit"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >
+                      Unit
+                    </label>
+                    <select
+                      id="unit"
+                      name="unit"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      required
+                      onChange={(e) =>
+                        setUnit(e.target.options[e.target.selectedIndex].text)
+                      }
+                      selected={unit}
+                    >
+                      <option value="">Select a unit</option>
+                      <option value="eggs">Teaspoon</option>
+                      <option value="bread">cup</option>
+                      <option value="milk">grams</option>
+                      <option value="chicken">units</option>
+                    </select>
+                  </div>
+                  <div className="flex flex-col justify-end">
+                    <button
+                      type="button"
+                      className="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                      onClick={handleAddIngredient}
+                    >
+                      Add
+                    </button>
+                  </div>
                 </div>
-                <div className="flex flex-col justify-end">
-                  <button
-                    type="button"
-                    className="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                  >
-                    Add
-                  </button>
-                </div>
-              </div>
+              </form>
 
               <label
                 htmlFor="ingredients"
@@ -235,51 +332,42 @@ export default function AddRecipe() {
                       </tr>
                     </thead>
                     <tbody>
-                      <tr class="bg-white dark:bg-gray-700">
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-200">
-                          Eggs
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                          Breakfast
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                          2
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                          Teaspoon
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                          <a
-                            href="#"
-                            class="font-medium text-red-600 dark:text-red-500 hover:underline"
-                          >
-                            Delete
-                          </a>
-                        </td>
-                      </tr>
+                      {
+                        recipeIngredientsTable.map((ingredient) => (
+                          <tr class="bg-white dark:bg-gray-700">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-200">
+                              {ingredient.ingredient_name}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                              {ingredient.ingredient_category}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                              {ingredient.quantity}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                              {ingredient.unit}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                              <span
+                                class="font-medium text-red-600 dark:text-red-500 hover:underline"
 
-                      <tr class="bg-white dark:bg-gray-700">
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-200">
-                          Bread
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                          Breakfast
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                          2
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                          Cup
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                          <a
-                            href="#"
-                            class="font-medium text-red-600 dark:text-red-500 hover:underline"
-                          >
-                            Delete
-                          </a>
-                        </td>
-                      </tr>
+                                onClick={() => {
+                                  // ask user to confirm deletion
+                                  if (!confirm("Are you sure you want to delete this ingredient?")) {
+                                    return;
+                                  }
+                                  const newRecipeIngredientsTable = recipeIngredientsTable.filter(
+                                    (item) => item.ingredient_name !== ingredient.ingredient_name
+                                  );
+                                  setRecipeIngredientsTable(newRecipeIngredientsTable);
+                                }}
+                              >
+                                Delete
+                              </span>
+                            </td>
+                          </tr>
+                        ))
+                      }
                     </tbody>
                   </table>
                 </div>
@@ -301,10 +389,10 @@ export default function AddRecipe() {
                   </button>
                 </Link>
               </div>
-            </form>
+            </div>
           </div>
         </div>
       </div>
-    </section>
+    </section >
   );
 }
