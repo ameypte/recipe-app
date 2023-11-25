@@ -5,7 +5,6 @@ import MyRecipeCard from "@/components/MyRecipeCard";
 import Link from "next/link";
 import { IoMdAdd } from "react-icons/io";
 
-
 function MyRecipe() {
   const [recipes, setRecipes] = useState([]);
   const [username, setUsername] = useState();
@@ -25,7 +24,6 @@ function MyRecipe() {
     const data = await responce.json();
     console.log(data);
     setRecipes(data);
-
   };
   return (
     <div>
@@ -202,13 +200,15 @@ function MyRecipe() {
         </form>
         {/* add recipe button to right*/}
         <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 mb-5 flex justify-end">
-          <button
-            type="button"
-            className="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-gree-700 focus:outline-none dark:focus:ring-green-800"
-          >
-            <IoMdAdd className="inline-block mr-2 " size={18} />
-            Add Recipe
-          </button>
+          <Link href="/add-recipe">
+            <button
+              type="button"
+              className="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-gree-700 focus:outline-none dark:focus:ring-green-800"
+            >
+              <IoMdAdd className="inline-block mr-2 " size={18} />
+              Add Recipe
+            </button>
+          </Link>
         </div>
 
         {/* recipe card is horizontal */}
