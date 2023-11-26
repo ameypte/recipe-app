@@ -9,6 +9,7 @@ export default function AddRecipe() {
   const [instructions, setInstructions] = useState("");
   const [servings, setServings] = useState("");
   const [recipe_category, setRecipeCategory] = useState([]);
+  const [selected_recipe_category, setSelected_Recipe_Category] = useState("");
   const [recipeCategories, setRecipeCategories] = useState([]);
   const [ingredients, setIngredients] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -59,8 +60,9 @@ export default function AddRecipe() {
 
   const handleRecipeChange = (e) => {
     getRecipeIngredients();
-
-    setRecipeCategory(e.target.options[e.target.selectedIndex].text);
+    setSelected_Recipe_Category(
+      () => e.target.options[e.target.selectedIndex].text
+    );
   };
   const handleCategoryChange = (e) => {
     getIngredients(e.target.value);
