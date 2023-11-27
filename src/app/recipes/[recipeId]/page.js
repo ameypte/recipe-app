@@ -1,27 +1,60 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import NavBar from "@/components/NavBar";
 
 export default function page({ params }) {
   const { recipeId } = params;
+
+  useEffect(() => {
+    getRecipe();
+  }, []);
+
+  const getRecipe = async () => {
+    const responce = await fetch("/api/recipe-info", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ recipe_id: recipeId }),
+    });
+
+    const data = await responce.json();
+
+    /* [
+    {
+        "recipe_id": 1,
+        "recipe_name": "Tomato Soup",
+        "description": "A delicious soup made from tomatoes",
+        "instructions": "1. Boil tomatoes. 2. Blend them. 3. Add seasoning.",
+        "cook_time": 20,
+        "servings": 4,
+        "recipe_by": "user",
+        "recipe_category": "Soup",
+        "likes": 1
+    }
+] */
+
+    setRecipe(data[0]);
+  };
+
+  // use state to store the recipe data
+  const [recipe, setRecipe] = useState([]);
+
   return (
     <>
-      +
       <NavBar />
       <div className="bg-white dark:bg-gray-900 py-5 w-2/4 mx-auto">
         <p className="mt-1 mb-4 text-4xl font-extrabold text-gray-900 dark:text-white sm:text-5xl sm:tracking-tight lg:text-4xl">
-          This is the recipe name
+          {recipe.recipe_name}
         </p>
-        <p className="mb-3 mt-9 font-normal text-gray-700 dark:text-gray-400">
-          This is the description lkjdsoiuf dsjfkdsj foioi diofj iofklksu fiof
-          ofldhjfkokjko kdfj fooffdsjfi djlfj kldfjsd fjdklf dfj
-          kjdexrdctfvgybhnjkesxrdctfvbgnhujmisxrdctfvbgnhujmkdcfvgbnhjmk
+        <p className="mb-3 mt-5 font-normal text-gray-700 dark:text-gray-400">
+          {recipe.description}
         </p>
 
         <div className=" mt-5 ">
           <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-            Recipe by: <span className="font-bold">Bhavesh Patil</span> | Posted
-            on: <span className="font-bold">26 Sept 2023</span>
+            Recipe by: <span className="font-bold">
+              {recipe.recipe_by}
+            </span> | Posted
+            on: <span className="font-bold">Undefined date</span>
           </p>
           <img
             class="h-auto rounded-lg "
@@ -29,14 +62,24 @@ export default function page({ params }) {
             alt="image description"
           />
         </div>
-        <div className="mt-5">
-          <p className=" mt-4">
-            <span className="font-bold">Servings:</span> 5
-          </p>
-          <p className="mt-4">
-            <span className="font-bold">Cooking time:</span> 12 min
-          </p>
+        {/* display servings and cooking time */}
+
+        <div className="flex flex-row justify-between mt-5">
+          <div className="flex flex-col">
+            <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
+              Servings: <span className="font-bold">{recipe.servings}</span>
+            </p>
+            <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
+              Cook Time: <span className="font-bold">{recipe.cook_time}</span> minutes
+            </p>
+          </div>
+          <div className="flex flex-col">
+            <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
+              Recipe Category: <span className="font-bold">{recipe.recipe_category}</span>
+            </p>
+          </div>
         </div>
+
         <div className=" ">
           <h2 class="mb-2 mt-4 text-md font-bold text-gray-900 dark:text-white">
             Required Ingredients:
@@ -83,11 +126,12 @@ export default function page({ params }) {
           <h2 class="mb-2 mt-5 text-xl font-bold text-gray-900 dark:text-white">
             Instructions
           </h2>
-          <ol class="max-w-md space-y-1 text-gray-500 list-decimal list-inside dark:text-gray-400">
-            <li>erxtcyvubinjmokdl</li>
-            <li>xretcfgvybhunjkmd</li>
-            <li>fcgvbhjnkmf g hjk</li>
-          </ol>
+          {/* display instructions from the database */}
+          <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
+            {recipe.instructions}
+          </p>
+
+
         </div>
       </div>
     </>

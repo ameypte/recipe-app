@@ -5,7 +5,7 @@ export const GET = async (req, res) => {
 
     try {
         const recipes = await query({
-            query: "select * from recipes",
+            query: "SELECT * FROM RecipesList",
             values: [],
         });
 
