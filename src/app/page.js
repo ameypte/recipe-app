@@ -12,7 +12,6 @@ export default function Home() {
     getRecipes();
   }, []);
 
-
   const getRecipes = async () => {
     const responce = await fetch("/api/recipes", {
       method: "GET",

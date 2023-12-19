@@ -97,9 +97,8 @@ export default function RecipeWizard() {
       body: JSON.stringify({ ids: [ids] }),
     });
     const data = await responce.json();
-    console.log(data);
-    setFindRecipeIngrediensts(data.recipes[0])
-
+    console.log(data.recipes);
+    setFindRecipeIngrediensts(data.recipes[0]);
   };
   const getRecipeIngredients = async () => {
     const response = await fetch("/api/ingredients", {

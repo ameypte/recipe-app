@@ -26,7 +26,6 @@ export const POST = async (req, res) => {
             return NextResponse.json({ message: "No ingredients selected" }, { status: 500 });
         }
     const dataString = data.ids.join(','); // "5,6"
-
 // [5,6]
 
       //ingredient id
@@ -41,7 +40,6 @@ export const POST = async (req, res) => {
         // loop through req_ingredients and call procedure FindRecipesByIngredients
         
         const recipes = await query({
-
             query: "CALL FindRecipesByIngredients(?)",
             values: [dataString],
         });
