@@ -12,7 +12,6 @@ export default function Home() {
     getRecipes();
   }, []);
 
-
   const getRecipes = async () => {
     const responce = await fetch("/api/recipes", {
       method: "GET",
@@ -33,7 +32,7 @@ export default function Home() {
         <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <p className="mt-1 text-4xl font-extrabold text-gray-900 dark:text-white sm:text-5xl sm:tracking-tight lg:text-6xl">
-              Find your Bhavesh favorite recipe
+              Find your favorite recipe
             </p>
             <p className="max-w-xl mt-5 mx-auto text-xl text-gray-500 dark:text-gray-400 mb-5">
               Search for your favorite recipe and find out how to make it at
@@ -90,12 +89,16 @@ export default function Home() {
             {/*  map  */}
             {recipes.map((recipe) => (
               <RecipeCard
-                recipeName={recipe.title}
+                recipeName={recipe.recipe_name}
                 description={recipe.description}
                 imageUrl={
                   "https://www.allrecipes.com/thmb/fFW1o307WSqFFYQ3-QXYVpnFj6E=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/48727-Mikes-homemade-pizza-DDMFS-beauty-4x3-BG-2974-a7a9842c14e34ca699f3b7d7143256cf.jpg"
                 }
                 cookTime={recipe.cook_time}
+                recipeId={recipe.recipe_id}
+                likes={recipe.likes}
+                recipe_by={recipe.recipe_by}
+                recipe_category={recipe.recipe_category}
               />
             ))}
           </div>
