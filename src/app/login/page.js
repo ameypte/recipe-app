@@ -27,8 +27,7 @@ export default function Login() {
 
     const data = await response.json();
     console.log(data);
-    
-    
+
     if (response.status === 400) {
       setMessage(data.message);
       return;
@@ -50,11 +49,11 @@ export default function Login() {
           className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white"
         >
           <img
-            className="w-8 h-8 mr-2"
-            src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg"
+            className="w-12 h-12 mr-2"
+            src="happy-chef-vector-icon.png"
             alt="logo"
           />
-          Flowbite
+          Recipe Hub
         </a>
         <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
@@ -110,7 +109,7 @@ export default function Login() {
                   required
                 />
               </div>
-                
+
               <button
                 type="submit"
                 className="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
