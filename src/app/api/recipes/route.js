@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import { query } from "@/lib/db";
+import { writeFile } from "fs/promises";
+
 
 export const GET = async (req, res) => {
 
@@ -16,27 +18,37 @@ export const GET = async (req, res) => {
     }
 };
 
+
 export const POST = async (req, res) => {
     try {
-               const data = await req.json();
+        console.log(req);
+        const data = await req.formData();
+        console.log(data);
 
-        console.log(data.title);
-        console.log(data.description);
-        console.log(data.instructions);
-        console.log(data.cook_time);
-        console.log(data.servings);
-        console.log(data.user_id);
-        console.log(data.recipe_category_id);
-        console.log(data.req_ingredients);
+        const file = data.get("file");
+        if (!file) return NextResponse.json({ message: "No file uploaded" }, { status: 500 });
 
+        const byteData = await file.arrayBuffer();
+        const buffer = Buffer.from(byteData);
+        // create path and unique file name
+        const path = `./public/${file.name}`;
+        await writeFile(path, buffer);
+
+        console.log(data.get("title"));
+        console.log(data.get("description"));
+        console.log(data.get("instructions"));
+        console.log(data.get("cook_time"));
+        console.log(data.get("servings"));
+        console.log(data.get("user_id"));
+        console.log(data.get("recipe_category_id"));
 
         const recipes = await query({
-            query: "INSERT INTO recipes (title, description, instructions, cook_time, servings, user_id, recipe_category_id) VALUES (?, ?, ?, ?, ?, ?, ?)",
-            values: [data.title, data.description, data.instructions, data.cook_time, data.servings, data.user_id, data.recipe_category_id],
+            query: "INSERT INTO recipes (title, description, instructions, cook_time, servings, user_id, recipe_category_id,image_url) VALUES (?, ?, ?, ?, ?, ?, ?,?)",
+            values: [data.get("title"), data.get("description"), data.get("instructions"), data.get("cook_time"), data.get("servings"), data.get("user_id"), data.get("recipe_category_id"), `/${file.name}`],
         });
 
         // get list of req_ingredients from data
-        const req_ingredients = data.req_ingredients;
+        const req_ingredients = JSON.parse(data.get("req_ingredients"));
 
         // loop through req_ingredients and insert into req_ingredients table
         for (let i = 0; i < req_ingredients.length; i++) {
