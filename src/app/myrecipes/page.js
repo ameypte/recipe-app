@@ -21,8 +21,8 @@ function MyRecipe() {
     });
     console.log(document.cookie);
     const data = await responce.json();
-    console.log(data);
     setRecipes(data);
+    console.log(data);
   };
   return (
     <div>
@@ -91,6 +91,7 @@ function MyRecipe() {
 
         {/* recipe card is horizontal */}
         <div className="w-full flex flex-col items-center my-5 space-y-5">
+          
           {recipes.map((recipe) => {
             if (localStorage.getItem("userId") == recipe.user_id) {
               return (

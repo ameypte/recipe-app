@@ -2,6 +2,7 @@
 // Import the necessary components and hooks
 import { useState, useEffect } from "react";
 import NavBar from "@/components/NavBar";
+import RecipeCard from "@/components/RecipeCard";
 
 export default function RecipeWizard() {
   const [recipes, setRecipes] = useState([]);
@@ -12,6 +13,7 @@ export default function RecipeWizard() {
   const [selectedIng, setSelectedIng] = useState("Select Category");
   const [recipeCategory, setRecipeCategory] = useState([]);
   const [ingredient, setIngredient] = useState([]);
+  const [findRecipeIngrediensts, setFindRecipeIngrediensts] = useState([]);
   const [ingredientsCategories, setIngredientsCategories] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
   useEffect(() => {
@@ -84,6 +86,21 @@ export default function RecipeWizard() {
     setIngredient(data.ingredients);
     console.log(data);
   };
+  const getRecipesByIngredients_ID = async (
+    ids
+  ) => {
+    const responce = await fetch("/api/find-recipe/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ ids: [ids] }),
+    });
+    const data = await responce.json();
+    console.log(data);
+    setFindRecipeIngrediensts(data.recipes[0])
+
+  };
   const getRecipeIngredients = async () => {
     const response = await fetch("/api/ingredients", {
       method: "GET",
@@ -118,7 +135,12 @@ export default function RecipeWizard() {
     if (!checkedIngredients.length > 0) {
       alert("Check in Some Ingredients");
     }
+    const checkedIngredientsString = checkedIngredients.join(",");
+    const checkedCategoryIdString = checkedCategoryId.join(",");
+    console.log(checkedCategoryIdString);
+    console.log(checkedIngredientsString);
     console.log(checkedIngredients, selectedIng, selectedCat);
+    getRecipesByIngredients_ID(checkedIngredients);
   };
   const handleDropdownItemClick = (itemName) => {
     console.log(`Selected item: ${itemName}`);
@@ -180,9 +202,8 @@ export default function RecipeWizard() {
               {/* Left Dropdown Content */}
               {ingredientsCategories.length > 0 ? (
                 <div
-                  className={`absolute mt-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 divide-y divide-gray-100 rounded-lg shadow ${
-                    isDropdownVisible ? "block" : "hidden"
-                  }`}
+                  className={`absolute mt-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 divide-y divide-gray-100 rounded-lg shadow ${isDropdownVisible ? "block" : "hidden"
+                    }`}
                 >
                   <a
                     href="#"
@@ -240,9 +261,8 @@ export default function RecipeWizard() {
               {/* Right Dropdown Content */}
               {ingredientsCategories.length > 0 ? (
                 <div
-                  className={`absolute mt-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 divide-y divide-gray-100 rounded-lg shadow ${
-                    isDropdownVisible2 ? "block" : "hidden"
-                  }`}
+                  className={`absolute mt-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 divide-y divide-gray-100 rounded-lg shadow ${isDropdownVisible2 ? "block" : "hidden"
+                    }`}
                 >
                   <a
                     href="#"
@@ -269,7 +289,6 @@ export default function RecipeWizard() {
               ) : null}
             </div>
           </div>
-          {/* Multiple checkbox input based on the the category of ingredients selected */}
 
           <h3 class="mb-4 mt-7 font-semibold text-gray-900 dark:text-white">
             Options
@@ -290,72 +309,6 @@ export default function RecipeWizard() {
             </label>
           </div>
           <div>
-            {/* <ul class="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-            <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-              <div class="flex items-center ps-3">
-                <input
-                  id="vue-checkbox-list"
-                  type="checkbox"
-                  value=""
-                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                />
-                <label
-                  for="vue-checkbox-list"
-                  class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                >
-                  Vue JS
-                </label>
-              </div>
-            </li>
-            <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-              <div class="flex items-center ps-3">
-                <input
-                  id="react-checkbox-list"
-                  type="checkbox"
-                  value=""
-                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                />
-                <label
-                  for="react-checkbox-list"
-                  class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                >
-                  React
-                </label>
-              </div>
-            </li>
-            <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-              <div class="flex items-center ps-3">
-                <input
-                  id="angular-checkbox-list"
-                  type="checkbox"
-                  value=""
-                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                />
-                <label
-                  for="angular-checkbox-list"
-                  class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                >
-                  Angular
-                </label>
-              </div>
-            </li>
-            <li class="w-full dark:border-gray-600">
-              <div class="flex items-center ps-3">
-                <input
-                  id="laravel-checkbox-list"
-                  type="checkbox"
-                  value=""
-                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                />
-                <label
-                  for="laravel-checkbox-list"
-                  class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                >
-                  Laravel
-                </label>
-              </div>
-            </li>
-          </ul> */}
             <div className="flex">
               {ingredient.length > 0 &&
                 ingredient.map((ingredient) => (
@@ -387,204 +340,7 @@ export default function RecipeWizard() {
                   </ul>
                 ))}
             </div>
-            {/* <ul class="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-              <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-                <div class="flex items-center ps-3">
-                  <input
-                    id="vue-checkbox-list"
-                    type="checkbox"
-                    value=""
-                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                  />
-                  <label
-                    for="vue-checkbox-list"
-                    class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                  >
-                    Vue JS
-                  </label>
-                </div>
-              </li>
-              <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-                <div class="flex items-center ps-3">
-                  <input
-                    id="react-checkbox-list"
-                    type="checkbox"
-                    value=""
-                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                  />
-                  <label
-                    for="react-checkbox-list"
-                    class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                  >
-                    React
-                  </label>
-                </div>
-              </li>
-              <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-                <div class="flex items-center ps-3">
-                  <input
-                    id="angular-checkbox-list"
-                    type="checkbox"
-                    value=""
-                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                  />
-                  <label
-                    for="angular-checkbox-list"
-                    class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                  >
-                    Angular
-                  </label>
-                </div>
-              </li>
-              <li class="w-full dark:border-gray-600">
-                <div class="flex items-center ps-3">
-                  <input
-                    id="laravel-checkbox-list"
-                    type="checkbox"
-                    value=""
-                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                  />
-                  <label
-                    for="laravel-checkbox-list"
-                    class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                  >
-                    Laravel
-                  </label>
-                </div>
-              </li>
-            </ul>
-            <ul class="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-              <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-                <div class="flex items-center ps-3">
-                  <input
-                    id="vue-checkbox-list"
-                    type="checkbox"
-                    value=""
-                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                  />
-                  <label
-                    for="vue-checkbox-list"
-                    class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                  >
-                    Vue JS
-                  </label>
-                </div>
-              </li>
-              <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-                <div class="flex items-center ps-3">
-                  <input
-                    id="react-checkbox-list"
-                    type="checkbox"
-                    value=""
-                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                  />
-                  <label
-                    for="react-checkbox-list"
-                    class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                  >
-                    React
-                  </label>
-                </div>
-              </li>
-              <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-                <div class="flex items-center ps-3">
-                  <input
-                    id="angular-checkbox-list"
-                    type="checkbox"
-                    value=""
-                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                  />
-                  <label
-                    for="angular-checkbox-list"
-                    class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                  >
-                    Angular
-                  </label>
-                </div>
-              </li>
-              <li class="w-full dark:border-gray-600">
-                <div class="flex items-center ps-3">
-                  <input
-                    id="laravel-checkbox-list"
-                    type="checkbox"
-                    value=""
-                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                  />
-                  <label
-                    for="laravel-checkbox-list"
-                    class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                  >
-                    Laravel
-                  </label>
-                </div>
-              </li>
-            </ul>
-            <ul class="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-              <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-                <div class="flex items-center ps-3">
-                  <input
-                    id="vue-checkbox-list"
-                    type="checkbox"
-                    value=""
-                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                  />
-                  <label
-                    for="vue-checkbox-list"
-                    class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                  >
-                    Vue JS
-                  </label>
-                </div>
-              </li>
-              <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-                <div class="flex items-center ps-3">
-                  <input
-                    id="react-checkbox-list"
-                    type="checkbox"
-                    value=""
-                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                  />
-                  <label
-                    for="react-checkbox-list"
-                    class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                  >
-                    React
-                  </label>
-                </div>
-              </li>
-              <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-                <div class="flex items-center ps-3">
-                  <input
-                    id="angular-checkbox-list"
-                    type="checkbox"
-                    value=""
-                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                  />
-                  <label
-                    for="angular-checkbox-list"
-                    class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                  >
-                    Angular
-                  </label>
-                </div>
-              </li>
-              <li class="w-full dark:border-gray-600">
-                <div class="flex items-center ps-3">
-                  <input
-                    id="laravel-checkbox-list"
-                    type="checkbox"
-                    value=""
-                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                  />
-                  <label
-                    for="laravel-checkbox-list"
-                    class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                  >
-                    Laravel
-                  </label>
-                </div>
-              </li>
-            </ul> */}
+
           </div>
           <div className="flex justify-end mt-5">
             <button
@@ -596,6 +352,67 @@ export default function RecipeWizard() {
             </button>
           </div>
         </div>
+
+        {/* Recipe List */}
+        <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+            {/* output from find recipe api:
+              {
+    "recipes": [
+        [
+            {
+                "recipe_id": 1,
+                "recipe_name": "Tomato Soup",
+                "description": "A delicious soup made from tomatoes",
+                "instructions": "1. Boil tomatoes. 2. Blend them. 3. Add seasoning.",
+                "cook_time": 20,
+                "servings": 4,
+                "recipe_by": "user",
+                "recipe_category": "Soup"
+            },
+            {
+                "recipe_id": 6,
+                "recipe_name": "test recipe",
+                "description": "test description",
+                "instructions": "test instructions",
+                "cook_time": 10,
+                "servings": 2,
+                "recipe_by": "user",
+                "recipe_category": "Soup"
+            },
+            {
+                "recipe_id": 7,
+                "recipe_name": "test recipe",
+                "description": "test description",
+                "instructions": "test instructions",
+                "cook_time": 10,
+                "servings": 2,
+                "recipe_by": "user",
+                "recipe_category": "Soup"
+            }
+        ],
+     
+    ]
+}
+            
+            */}
+            {findRecipeIngrediensts.length >0 &&
+              findRecipeIngrediensts.map((recipe) => (
+                <RecipeCard
+                  key={recipe.recipe_id}
+                  recipeId={recipe.recipe_id}
+                  imageUrl={recipe.image_url}
+                  recipeName={recipe.recipe_name}
+                  description={recipe.description}
+                  cookTime={recipe.cook_time}
+                  recipe_by={recipe.recipe_by}
+                  recipe_category={recipe.recipe_category}
+                />
+              ))}
+            
+          </div>
+        </div>
+
       </div>
     </div>
   );
