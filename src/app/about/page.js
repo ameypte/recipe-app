@@ -105,17 +105,16 @@ export default function page({ params }) {
               </h4>
               <h5 class="text-lg mt-0 mb-2 text-blueGray-600"></h5>
             </div>
-            <div class="w-full lg:w-6/12 px-4">
+            <div class="w-full lg:w-6/12 px-4 text-white	">
               <div class="flex flex-wrap items-top mb-6">
-                <div class="w-full lg:w-4/12 px-4">
-                  <span class="block uppercase text-blueGray-500 text-sm font-semibold mb-2">
+                <div class="w-full  lg:w-4/12 px-4">
+                  <span class="block uppercase text-blueGray-500 text-xl font-semibold mb-2">
                     <strong>Developed by</strong>
                   </span>
-                  <ul class="list-unstyled">
+                  <ul class="list-unstyled align-middle">
                     <li>
                       <a
                         class="text-blueGray-600 hover:text-blueGray-800 font-semibold block pb-2 text-sm"
-                        href="https://github.com/creativetimofficial/notus-js/blob/main/LICENSE.md?ref=njs-profile"
                       >
                         Heramb Bhoodhar
                       </a>
@@ -123,7 +122,6 @@ export default function page({ params }) {
                     <li>
                       <a
                         class="text-blueGray-600 hover:text-blueGray-800 font-semibold block pb-2 text-sm"
-                        href="https://creative-tim.com/terms?ref=njs-profile"
                       >
                         Amey Pathe
                       </a>
@@ -131,7 +129,6 @@ export default function page({ params }) {
                     <li>
                       <a
                         class="text-blueGray-600 hover:text-blueGray-800 font-semibold block pb-2 text-sm"
-                        href="https://creative-tim.com/privacy?ref=njs-profile"
                       >
                         Bhavesh Patil
                       </a>
@@ -139,7 +136,6 @@ export default function page({ params }) {
                     <li>
                       <a
                         class="text-blueGray-600 hover:text-blueGray-800 font-semibold block pb-2 text-sm"
-                        href="https://creative-tim.com/contact-us?ref=njs-profile"
                       >
                         Diksha Shingne
                       </a>
@@ -147,7 +143,6 @@ export default function page({ params }) {
                     <li>
                       <a
                         class="text-blueGray-600 hover:text-blueGray-800 font-semibold block pb-2 text-sm"
-                        href="https://creative-tim.com/contact-us?ref=njs-profile"
                       >
                         Urja Wagh
                       </a>
