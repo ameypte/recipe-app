@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 19, 2023 at 03:42 PM
+-- Generation Time: Dec 20, 2023 at 08:42 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.1.17
 
@@ -30,6 +30,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `FindRecipesByIngredients` (IN `ingr
         SELECT
             r.recipe_id,
             r.title AS recipe_name,
+r.image_url,
             r.description,
             r.instructions,
             r.cook_time,
@@ -147,15 +148,6 @@ CREATE TABLE `comments` (
   `comment_date` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
---
--- Dumping data for table `comments`
---
-
-INSERT INTO `comments` (`comment_id`, `recipe_id`, `user_id`, `comment_text`, `comment_date`) VALUES
-(1, 1, 2, 'I loved this soup!', '2023-11-22 18:15:30'),
-(2, 1, 3, 'Great recipe, thanks!', '2023-11-22 18:15:30'),
-(3, 3, 1, 'Spicy but delicious.', '2023-11-22 18:15:30');
-
 -- --------------------------------------------------------
 
 --
@@ -174,13 +166,115 @@ CREATE TABLE `ingredients` (
 
 INSERT INTO `ingredients` (`ingredient_id`, `name`, `category_id`) VALUES
 (1, 'Salt', 1),
-(2, 'Pepper', 1),
-(3, 'Tomato', 2),
-(4, 'Onion', 2),
-(5, 'Apple', 3),
-(6, 'Banana', 3),
-(7, 'Milk', 4),
-(8, 'Chicken', 5);
+(2, 'Black Pepper', 1),
+(3, 'Cumin', 1),
+(4, 'Paprika', 1),
+(5, 'Coriander', 1),
+(6, 'Turmeric', 1),
+(7, 'Ginger', 1),
+(8, 'Cinnamon', 1),
+(9, 'Cloves', 1),
+(10, 'Chili Powder', 1),
+(11, 'Mustard Powder', 1),
+(12, 'Cardamom', 1),
+(13, 'Fennel Seeds', 1),
+(14, 'Oregano', 1),
+(15, 'Rosemary', 1),
+(16, 'Basil', 1),
+(17, 'Bay Leaves', 1),
+(18, 'Carrot', 2),
+(19, 'Tomato', 2),
+(20, 'Potato', 2),
+(21, 'Onion', 2),
+(22, 'Garlic', 2),
+(23, 'Bell Pepper', 2),
+(24, 'Spinach', 2),
+(25, 'Zucchini', 2),
+(26, 'Eggplant', 2),
+(27, 'Cabbage', 2),
+(28, 'Cauliflower', 2),
+(29, 'Mushroom', 2),
+(30, 'Green Beans', 2),
+(31, 'Asparagus', 2),
+(32, 'Celery', 2),
+(33, 'Lettuce', 2),
+(34, 'Kale', 2),
+(35, 'Radish', 2),
+(36, 'Pumpkin', 2),
+(37, 'Sweet Potato', 2),
+(38, 'Turnip', 2),
+(39, 'Artichoke', 2),
+(40, 'Leek', 2),
+(41, 'Scallion', 2),
+(42, 'Beetroot', 2),
+(43, 'Radicchio', 2),
+(44, 'Swiss Chard', 2),
+(45, 'Watercress', 2),
+(46, 'Brussels Sprouts', 2),
+(47, 'Apple', 3),
+(48, 'Banana', 3),
+(49, 'Orange', 3),
+(50, 'Strawberry', 3),
+(51, 'Blueberry', 3),
+(52, 'Raspberry', 3),
+(53, 'Grapes', 3),
+(54, 'Watermelon', 3),
+(55, 'Pineapple', 3),
+(56, 'Mango', 3),
+(57, 'Peach', 3),
+(58, 'Pear', 3),
+(59, 'Cherry', 3),
+(60, 'Kiwi', 3),
+(61, 'Plum', 3),
+(62, 'Lemon', 3),
+(63, 'Lime', 3),
+(64, 'Milk', 4),
+(65, 'Butter', 4),
+(66, 'Cheese', 4),
+(67, 'Yogurt', 4),
+(68, 'Cream', 4),
+(69, 'Eggs', 4),
+(70, 'Sour Cream', 4),
+(71, 'Heavy Cream', 4),
+(72, 'Cottage Cheese', 4),
+(73, 'Whipped Cream', 4),
+(74, 'Condensed Milk', 4),
+(75, 'Evaporated Milk', 4),
+(76, 'Half-and-Half', 4),
+(77, 'Cream Cheese', 4),
+(78, 'Ricotta Cheese', 4),
+(79, 'Parmesan Cheese', 4),
+(80, 'Feta Cheese', 4),
+(81, 'Beef', 5),
+(82, 'Chicken', 5),
+(83, 'Pork', 5),
+(84, 'Lamb', 5),
+(85, 'Turkey', 5),
+(86, 'Duck', 5),
+(87, 'Goose', 5),
+(88, 'Veal', 5),
+(89, 'Bacon', 5),
+(90, 'Sausage', 5),
+(91, 'Ham', 5),
+(92, 'Salami', 5),
+(93, 'Pepperoni', 5),
+(94, 'Venison', 5),
+(95, 'Rabbit', 5),
+(96, 'Quail', 5),
+(97, 'Olive Oil', 6),
+(98, 'Vegetable Oil', 6),
+(99, 'Coconut Oil', 6),
+(100, 'Canola Oil', 6),
+(101, 'Sunflower Oil', 6),
+(102, 'Sesame Oil', 6),
+(103, 'Peanut Oil', 6),
+(104, 'Corn Oil', 6),
+(105, 'Avocado Oil', 6),
+(106, 'Grapeseed Oil', 6),
+(107, 'Walnut Oil', 6),
+(108, 'Flaxseed Oil', 6),
+(109, 'Safflower Oil', 6),
+(110, 'Truffle Oil', 6);
 
 -- --------------------------------------------------------
 
@@ -202,7 +296,8 @@ INSERT INTO `ingredients_category` (`category_id`, `category_name`) VALUES
 (2, 'Vegetables'),
 (3, 'Fruits'),
 (4, 'Dairy'),
-(5, 'Meat');
+(5, 'Meat'),
+(6, 'Oils');
 
 -- --------------------------------------------------------
 
@@ -216,15 +311,6 @@ CREATE TABLE `likes` (
   `user_id` int(11) DEFAULT NULL,
   `liked_date` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-
---
--- Dumping data for table `likes`
---
-
-INSERT INTO `likes` (`like_id`, `recipe_id`, `user_id`, `liked_date`) VALUES
-(1, 1, 3, '2023-11-22 18:15:31'),
-(2, 2, 1, '2023-11-22 18:15:31'),
-(3, 3, 2, '2023-11-22 18:15:31');
 
 -- --------------------------------------------------------
 
@@ -240,28 +326,9 @@ CREATE TABLE `recipes` (
   `cook_time` int(11) DEFAULT NULL,
   `servings` int(11) DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL,
-  `recipe_category_id` int(11) DEFAULT NULL
+  `recipe_category_id` int(11) DEFAULT NULL,
+  `image_url` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-
---
--- Dumping data for table `recipes`
---
-
-INSERT INTO `recipes` (`recipe_id`, `title`, `description`, `instructions`, `cook_time`, `servings`, `user_id`, `recipe_category_id`) VALUES
-(1, 'Tomato Soup', 'A delicious soup made from tomatoes', '1. Boil tomatoes. 2. Blend them. 3. Add seasoning.', 20, 4, 1, 1),
-(2, 'Banana Smoothie', 'A refreshing smoothie made from bananas', '1. Blend bananas. 2. Add milk. 3. Blend again.', 0, 2, 2, 2),
-(3, 'Chicken Curry', 'Spicy chicken curry recipe', '1. Cook chicken. 2. Add spices. 3. Simmer.', 30, 6, 3, 3),
-(4, 'Spaghetti Bolognese', 'Classic Italian pasta dish with rich meat sauce.', '1. Cook spaghetti according to package instructions. 2. Prepare Bolognese sauce by browning ground beef and simmering with tomatoes and herbs. 3. Serve sauce over cooked spaghetti.', 30, 4, 5, 3),
-(5, 'Chicken Alfredo Pasta', 'Creamy Alfredo sauce with grilled chicken over fettuccine.', '1. Grill chicken until fully cooked. 2. Prepare Alfredo sauce with cream, butter, and Parmesan cheese. 3. Toss cooked fettuccine with Alfredo sauce and top with grilled chicken.', 25, 3, 5, 3),
-(6, 'test recipe', 'test description', 'test instructions', 10, 2, 1, 1),
-(7, 'test recipe', 'test description', 'test instructions', 10, 2, 1, 1),
-(8, 'dsfdsa', 'dsaff', 'sdadfds', 12, 5, 1, 3),
-(9, 'dsfdsa', 'dsaff', 'sdadfds', 12, 5, 1, 3),
-(10, 'dsfdsa', 'dsaff', 'sdadfds', 12, 5, 1, 3),
-(11, 'gyjff', '.hk,j', 'jkh', 4, 4, 1, 2),
-(12, 'pannerxcvbnm', 'cvbnm', 'dfghfghjwxecrvtbynhmjusdfghjcdfvghhvrc', 69, 5, 1, 2),
-(13, 'aksbkjf', 'fhkjhjdhfjhgkj\nskjjdhkjh\n', 'lfjvjdhfkh', 87, 78, 1, 1),
-(14, 'dfs', 'sadfsdf', 'fdsfa\nsadfj \nsadf s\n safs\n fsdf ', 10, 4, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -275,6 +342,7 @@ CREATE TABLE `recipeslist` (
 ,`description` text
 ,`user_id` int(11)
 ,`recipe_by` varchar(50)
+,`image_url` varchar(255)
 ,`recipe_category` varchar(50)
 ,`cook_time` int(11)
 ,`likes` bigint(21)
@@ -298,7 +366,9 @@ CREATE TABLE `recipe_category` (
 INSERT INTO `recipe_category` (`category_id`, `category_name`) VALUES
 (1, 'Soup'),
 (2, 'Beverage'),
-(3, 'Main Course');
+(3, 'Main Course'),
+(4, 'Dessert'),
+(5, 'Breakfast');
 
 -- --------------------------------------------------------
 
@@ -313,30 +383,6 @@ CREATE TABLE `req_ingredients` (
   `quantity` decimal(10,2) DEFAULT NULL,
   `measurement_unit` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-
---
--- Dumping data for table `req_ingredients`
---
-
-INSERT INTO `req_ingredients` (`req_ingredient_id`, `recipe_id`, `ingredient_id`, `quantity`, `measurement_unit`) VALUES
-(1, 1, 3, 4.00, 'units'),
-(2, 1, 1, 1.00, 'teaspoon'),
-(3, 1, 2, 1.00, 'teaspoon'),
-(4, 2, 6, 2.00, 'units'),
-(5, 2, 7, 1.00, 'cup'),
-(6, 3, 8, 500.00, 'grams'),
-(7, 6, 1, 1.00, 'cup'),
-(8, 6, 2, 2.00, 'cup'),
-(9, 7, 1, 1.00, 'cup'),
-(10, 7, 2, 2.00, 'cup'),
-(11, 11, 8, 4.00, 'cup'),
-(12, 11, 6, 7.00, 'cup'),
-(13, 12, 7, 7.00, 'grams'),
-(14, 13, 4, 7.00, 'cup'),
-(15, 13, 7, 8.00, 'cup'),
-(16, 14, 1, 5.00, 'cup'),
-(17, 14, 5, 6.00, 'units'),
-(18, 14, 8, 500.00, 'grams');
 
 -- --------------------------------------------------------
 
@@ -356,17 +402,11 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`user_id`, `username`, `email`, `password`) VALUES
-(1, 'user', 'user', 'user'),
-(2, 'user2', 'user2@example.com', 'hashed_password_2'),
-(3, 'user3', 'user3@example.com', 'hashed_password_3'),
-(4, 'Bhaveshxop', 'bhaveshxop@gmail.com', '4706'),
-(5, 'Amey', 'ameypathe@gmail.com', 'amey123'),
-(6, 'DEN22171185', 'sonamalai12@gmail.com', 'W6n@4Kfp5qEhp5m'),
-(7, 'asdsad', 'sdfdsf', 'sdfsdf'),
-(8, 'asdsad', 'sdfdsf@dsfd.com', 'sdfsdf'),
-(9, 'ffssdf', 'fesfg@gdfg.c', 'ddfsdfd'),
-(10, 'Heramb the pro', 'fesfg@gdfg.c', 'W6n@4Kfp5qEhp5m'),
-(11, 'keval', 'keval@gmail.com', 'keval123');
+(23, 'diksha', 'diksha@gmail.com', '2005'),
+(24, 'urja', 'urja@gmail.com', '2004'),
+(25, 'amey', 'ameypte@gmail.com', '2003'),
+(26, 'bhavesh', 'bhavesh@gmail.com', '2002'),
+(27, 'heramb', 'heramb@gmail.com', '2001');
 
 -- --------------------------------------------------------
 
@@ -375,7 +415,7 @@ INSERT INTO `users` (`user_id`, `username`, `email`, `password`) VALUES
 --
 DROP TABLE IF EXISTS `recipeslist`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `recipeslist`  AS SELECT `r`.`recipe_id` AS `recipe_id`, `r`.`title` AS `recipe_name`, `r`.`description` AS `description`, `r`.`user_id` AS `user_id`, `u`.`username` AS `recipe_by`, `rc`.`category_name` AS `recipe_category`, `r`.`cook_time` AS `cook_time`, count(`l`.`like_id`) AS `likes` FROM (((`recipes` `r` left join `users` `u` on(`r`.`user_id` = `u`.`user_id`)) left join `recipe_category` `rc` on(`r`.`recipe_category_id` = `rc`.`category_id`)) left join `likes` `l` on(`r`.`recipe_id` = `l`.`recipe_id`)) GROUP BY `r`.`recipe_id` ORDER BY count(`l`.`like_id`) DESC ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `recipeslist`  AS SELECT `r`.`recipe_id` AS `recipe_id`, `r`.`title` AS `recipe_name`, `r`.`description` AS `description`, `r`.`user_id` AS `user_id`, `u`.`username` AS `recipe_by`, `r`.`image_url` AS `image_url`, `rc`.`category_name` AS `recipe_category`, `r`.`cook_time` AS `cook_time`, count(`l`.`like_id`) AS `likes` FROM (((`recipes` `r` left join `users` `u` on(`r`.`user_id` = `u`.`user_id`)) left join `recipe_category` `rc` on(`r`.`recipe_category_id` = `rc`.`category_id`)) left join `likes` `l` on(`r`.`recipe_id` = `l`.`recipe_id`)) GROUP BY `r`.`recipe_id` ORDER BY count(`l`.`like_id`) DESC ;
 
 --
 -- Indexes for dumped tables
@@ -452,13 +492,13 @@ ALTER TABLE `comments`
 -- AUTO_INCREMENT for table `ingredients`
 --
 ALTER TABLE `ingredients`
-  MODIFY `ingredient_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `ingredient_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=111;
 
 --
 -- AUTO_INCREMENT for table `ingredients_category`
 --
 ALTER TABLE `ingredients_category`
-  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `likes`
@@ -470,25 +510,25 @@ ALTER TABLE `likes`
 -- AUTO_INCREMENT for table `recipes`
 --
 ALTER TABLE `recipes`
-  MODIFY `recipe_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `recipe_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `recipe_category`
 --
 ALTER TABLE `recipe_category`
-  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `req_ingredients`
 --
 ALTER TABLE `req_ingredients`
-  MODIFY `req_ingredient_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `req_ingredient_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- Constraints for dumped tables

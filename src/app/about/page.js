@@ -47,7 +47,7 @@ export default function page({ params }) {
                         </svg>
                       </span>
                       <p class="mt-4 mb-2 text-3xl font-bold text-gray-700 dark:text-gray-400">
-                        2097
+                        12
                       </p>
                       <h2 class="text-sm text-gray-700 dark:text-gray-400">
                         Recipes
@@ -75,7 +75,7 @@ export default function page({ params }) {
                         </svg>
                       </span>
                       <p class="mt-4 mb-2 text-3xl font-bold text-gray-700 dark:text-gray-400">
-                        3,590
+                        5
                       </p>
                       <h2 class="text-sm text-gray-700 dark:text-gray-400">
                         users
@@ -100,7 +100,7 @@ export default function page({ params }) {
         <div class="container mx-auto px-4">
           <div class="flex flex-wrap text-left lg:text-left">
             <div class="w-full lg:w-6/12 px-4">
-              <h4 class="text-3xl fonat-semibold text-blueGray-700">
+              <h4 class="text-3xl fonat-semibold text-blueGray-700 w-full lg:w-6/12 px-4 text-white	">
                 Let's keep in touch!
               </h4>
               <h5 class="text-lg mt-0 mb-2 text-blueGray-600"></h5>

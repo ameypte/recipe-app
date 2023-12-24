@@ -99,6 +99,8 @@ export default function RecipeWizard() {
     const data = await responce.json();
     console.log(data.recipes);
     setFindRecipeIngrediensts(data.recipes[0]);
+
+
   };
   const getRecipeIngredients = async () => {
     const response = await fetch("/api/ingredients", {
@@ -395,20 +397,29 @@ export default function RecipeWizard() {
 }
             
             */}
-            {findRecipeIngrediensts.length >0 &&
+
+            {findRecipeIngrediensts.length > 0 &&
               findRecipeIngrediensts.map((recipe) => (
-                <RecipeCard
-                  key={recipe.recipe_id}
-                  recipeId={recipe.recipe_id}
-                  imageUrl={recipe.image_url}
-                  recipeName={recipe.recipe_name}
-                  description={recipe.description}
-                  cookTime={recipe.cook_time}
-                  recipe_by={recipe.recipe_by}
-                  recipe_category={recipe.recipe_category}
-                />
+
+                recipe.recipe_category === selectedCat ||
+                selectedCat === "All"
+                && (
+                  <RecipeCard
+                    key={recipe.recipe_id}
+                    recipeId={recipe.recipe_id}
+                    imageUrl={
+                      recipe.image_url ? recipe.image_url : "https://www.allrecipes.com/thmb/fFW1o307WSqFFYQ3-QXYVpnFj6E=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/48727-Mikes-homemade-pizza-DDMFS-beauty-4x3-BG-2974-a7a9842c14e34ca699f3b7d7143256cf.jpg"
+                    }
+                    recipeName={recipe.recipe_name}
+                    description={recipe.description}
+                    cookTime={recipe.cook_time}
+                    recipe_by={recipe.recipe_by}
+                    recipe_category={recipe.recipe_category}
+                  />
+                )
+
               ))}
-            
+
           </div>
         </div>
 

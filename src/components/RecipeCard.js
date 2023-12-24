@@ -15,8 +15,6 @@ export default function RecipeCard({
   is_liked = false,
   recipe_by,
   posted_on,
-
-
 }) {
 
   const [isLiked, setIsLiked] = useState(false);
