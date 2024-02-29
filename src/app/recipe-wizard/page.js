@@ -310,15 +310,16 @@ export default function RecipeWizard() {
             </label>
           </div>
           <div>
-            <div className="flex">
+            <div className="flex flex-wrap items-center justify-center w-full mt-3 mb-3 sm:mt-0 sm:mb-0 sm:ms-0 sm:me-2">
               {ingredient.length > 0 &&
                 ingredient.map((ingredient) => (
-                  <ul
-                    key={ingredient.id}
-                    className="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                  >
-                    <li className="inline-block w-auto border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-                      <div className="flex items-center ps-3">
+                  <div className="flex items-center">
+                    <ul
+                      key={ingredient.id}
+                      className="flex flex-wrap items-center justify-center mt-3 mb-3 sm:mt-0 sm:mb-0 sm:ms-0 sm:me-2"
+                    >
+                      <li className="flex items-center">
+
                         <input
                           id={`checkbox-${ingredient.ingredient_id}`}
                           type="checkbox"
@@ -336,9 +337,10 @@ export default function RecipeWizard() {
                         >
                           {ingredient.name}
                         </label>
-                      </div>
-                    </li>
-                  </ul>
+
+                      </li>
+                    </ul>
+                  </div>
                 ))}
             </div>
 

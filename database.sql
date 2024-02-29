@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 20, 2023 at 08:42 AM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.1.17
+-- Generation Time: Feb 29, 2024 at 06:38 AM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -114,6 +114,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `RecipeInfo` (IN `recipeID` INT)   B
     SELECT
         r.recipe_id AS recipe_id,
         r.title AS recipe_name,
+r.image_url AS image_url,
         r.description AS description,
         r.instructions AS instructions,
         r.cook_time AS cook_time,
@@ -330,6 +331,13 @@ CREATE TABLE `recipes` (
   `image_url` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
+--
+-- Dumping data for table `recipes`
+--
+
+INSERT INTO `recipes` (`recipe_id`, `title`, `description`, `instructions`, `cook_time`, `servings`, `user_id`, `recipe_category_id`, `image_url`) VALUES
+(22, 'Maggie', 'a simple 2 minute snack', 'Sure, here are the steps to prepare Maggi noodles:\r\n\r\n1. Boil water in a pan. You can add a few drops of oil and a pinch of salt to the water to prevent the noodles from sticking together.\r\n\r\n2. Once the water is boiling, break the Maggi noodle cake into four parts and add it to the boiling water.\r\n\r\n3. Let the noodles cook for about 2 minutes. Stir occasionally to ensure they cook evenly.\r\n\r\n4. While the noodles are cooking, open the Maggi tastemaker packet and keep it aside.\r\n\r\n5. After 2 minutes, add the Maggi tastemaker to the noodles. Stir well to ensure the tastemaker mixes evenly with the noodles.\r\n\r\n6. Let the noodles cook for another 1-2 minutes, or until the water has evaporated and the noodles are cooked to your desired consistency.\r\n\r\n7. Once the noodles are ready, turn off the heat and let them sit for a minute to cool down slightly.\r\n\r\n8. Serve the Maggi noodles hot, garnished with chopped vegetables or herbs if desired. Enjoy!', 5, 2, 28, 5, '/maggie.jpg');
+
 -- --------------------------------------------------------
 
 --
@@ -384,6 +392,16 @@ CREATE TABLE `req_ingredients` (
   `measurement_unit` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
+--
+-- Dumping data for table `req_ingredients`
+--
+
+INSERT INTO `req_ingredients` (`req_ingredient_id`, `recipe_id`, `ingredient_id`, `quantity`, `measurement_unit`) VALUES
+(28, 22, 1, 2.00, 'grams'),
+(29, 22, 10, 4.00, 'grams'),
+(30, 22, 18, 1.00, 'units'),
+(31, 22, 21, 1.00, 'units');
+
 -- --------------------------------------------------------
 
 --
@@ -406,7 +424,8 @@ INSERT INTO `users` (`user_id`, `username`, `email`, `password`) VALUES
 (24, 'urja', 'urja@gmail.com', '2004'),
 (25, 'amey', 'ameypte@gmail.com', '2003'),
 (26, 'bhavesh', 'bhavesh@gmail.com', '2002'),
-(27, 'heramb', 'heramb@gmail.com', '2001');
+(27, 'heramb', 'heramb@gmail.com', '2001'),
+(28, 'tanaya', 'tanaya@gamil.com', 'tanaya');
 
 -- --------------------------------------------------------
 
@@ -510,7 +529,7 @@ ALTER TABLE `likes`
 -- AUTO_INCREMENT for table `recipes`
 --
 ALTER TABLE `recipes`
-  MODIFY `recipe_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `recipe_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `recipe_category`
@@ -522,13 +541,13 @@ ALTER TABLE `recipe_category`
 -- AUTO_INCREMENT for table `req_ingredients`
 --
 ALTER TABLE `req_ingredients`
-  MODIFY `req_ingredient_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `req_ingredient_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- Constraints for dumped tables

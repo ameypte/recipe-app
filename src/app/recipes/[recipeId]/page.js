@@ -4,10 +4,28 @@ import NavBar from "@/components/NavBar";
 
 export default function page({ params }) {
   const { recipeId } = params;
+  const [recipe, setRecipe] = useState([]);
+  const [ingredients, setIngredients] = useState([]);
 
   useEffect(() => {
     getRecipe();
+    getIngredients();
   }, []);
+
+  const getIngredients = async () => {
+    const responce = await fetch("/api/recipe-ingredients", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ recipe_id: recipeId }),
+    });
+
+    const data = await responce.json();
+
+    setIngredients(data);
+  }
+
+
+
 
   const getRecipe = async () => {
     const responce = await fetch("/api/recipe-info", {
@@ -18,25 +36,10 @@ export default function page({ params }) {
 
     const data = await responce.json();
 
-    /* [
-    {
-        "recipe_id": 1,
-        "recipe_name": "Tomato Soup",
-        "description": "A delicious soup made from tomatoes",
-        "instructions": "1. Boil tomatoes. 2. Blend them. 3. Add seasoning.",
-        "cook_time": 20,
-        "servings": 4,
-        "recipe_by": "user",
-        "recipe_category": "Soup",
-        "likes": 1
-    }
-] */
-
     setRecipe(data[0]);
   };
 
-  // use state to store the recipe data
-  const [recipe, setRecipe] = useState([]);
+
 
   return (
     <>
@@ -105,20 +108,24 @@ export default function page({ params }) {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr class="bg-white dark:bg-gray-700">
-                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-200">
-                      paneer
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                      cat
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                      1 lit
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                      784
-                    </td>
-                  </tr>
+
+                  {ingredients.map((ingredient) => (
+                    <tr class="bg-white dark:bg-gray-700">
+                      <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-200">
+                        {ingredient.ingredient_name}
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                        {ingredient.category_name}
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                        {ingredient.quantity}
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                        {ingredient.measurement_unit}
+                      </td>
+                    </tr>
+                  ))}
+
                 </tbody>
               </table>
             </div>
