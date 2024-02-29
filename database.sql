@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 29, 2024 at 06:38 AM
+-- Generation Time: Feb 29, 2024 at 07:16 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -95,20 +95,22 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `GetRecipesByIngredients` (IN `ingre
     DROP TEMPORARY TABLE IF EXISTS temp_recipes;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `GetRequiredIngredients` (IN `recipeID` INT)   BEGIN
-    SELECT
-    		i.ingredient_id,
+CREATE DEFINER=`root`@`localhost` PROCEDURE `GetRequiredIngredients` (IN `recipeID` INT)   SELECT
+        i.ingredient_id,
         ri.recipe_id,
         i.name AS ingredient_name,
+        i.category_id,
+        ic.category_name AS category_name,
         ri.quantity,
         ri.measurement_unit
     FROM
         req_ingredients ri
     JOIN
         ingredients i ON ri.ingredient_id = i.ingredient_id
+    JOIN
+        ingredients_category ic ON i.category_id = ic.category_id
     WHERE
-        ri.recipe_id = recipeID;
-END$$
+        ri.recipe_id = recipeID$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `RecipeInfo` (IN `recipeID` INT)   BEGIN
     SELECT
@@ -275,7 +277,9 @@ INSERT INTO `ingredients` (`ingredient_id`, `name`, `category_id`) VALUES
 (107, 'Walnut Oil', 6),
 (108, 'Flaxseed Oil', 6),
 (109, 'Safflower Oil', 6),
-(110, 'Truffle Oil', 6);
+(110, 'Truffle Oil', 6),
+(111, 'Cold Water', 7),
+(112, 'Warm Water', 7);
 
 -- --------------------------------------------------------
 
@@ -298,7 +302,8 @@ INSERT INTO `ingredients_category` (`category_id`, `category_name`) VALUES
 (3, 'Fruits'),
 (4, 'Dairy'),
 (5, 'Meat'),
-(6, 'Oils');
+(6, 'Oils'),
+(7, 'Water');
 
 -- --------------------------------------------------------
 
@@ -336,7 +341,8 @@ CREATE TABLE `recipes` (
 --
 
 INSERT INTO `recipes` (`recipe_id`, `title`, `description`, `instructions`, `cook_time`, `servings`, `user_id`, `recipe_category_id`, `image_url`) VALUES
-(22, 'Maggie', 'a simple 2 minute snack', 'Sure, here are the steps to prepare Maggi noodles:\r\n\r\n1. Boil water in a pan. You can add a few drops of oil and a pinch of salt to the water to prevent the noodles from sticking together.\r\n\r\n2. Once the water is boiling, break the Maggi noodle cake into four parts and add it to the boiling water.\r\n\r\n3. Let the noodles cook for about 2 minutes. Stir occasionally to ensure they cook evenly.\r\n\r\n4. While the noodles are cooking, open the Maggi tastemaker packet and keep it aside.\r\n\r\n5. After 2 minutes, add the Maggi tastemaker to the noodles. Stir well to ensure the tastemaker mixes evenly with the noodles.\r\n\r\n6. Let the noodles cook for another 1-2 minutes, or until the water has evaporated and the noodles are cooked to your desired consistency.\r\n\r\n7. Once the noodles are ready, turn off the heat and let them sit for a minute to cool down slightly.\r\n\r\n8. Serve the Maggi noodles hot, garnished with chopped vegetables or herbs if desired. Enjoy!', 5, 2, 28, 5, '/maggie.jpg');
+(22, 'Maggie', 'a simple 2 minute snack', 'Sure, here are the steps to prepare Maggi noodles:\n\n1. Boil water in a pan. You can add a few drops of oil and a pinch of salt to the water to prevent the noodles from sticking together.\n\n2. Once the water is boiling, break the Maggi noodle cake into four parts and add it to the boiling water.\n\n3. Let the noodles cook for about 2 minutes. Stir occasionally to ensure they cook evenly.\n\n4. While the noodles are cooking, open the Maggi tastemaker packet and keep it aside.\n\n5. After 2 minutes, add the Maggi tastemaker to the noodles. Stir well to ensure the tastemaker mixes evenly with the noodles.\n\n6. Let the noodles cook for another 1-2 minutes, or until the water has evaporated and the noodles are cooked to your desired consistency.\n\n7. Once the noodles are ready, turn off the heat and let them sit for a minute to cool down slightly.\n\n8. Serve the Maggi noodles hot, garnished with chopped vegetables or herbs if desired. Enjoy!', 5, 2, 28, 5, '/maggie.jpg'),
+(23, 'Chai', 'Favourite Indian Beverage', 'Boil water: In a saucepan, bring water to a boil.\r\n\r\nAdd spices (optional): If you\'re using spices, add them to the boiling water. Common spices used in chai include crushed cardamom pods, cinnamon sticks, ginger slices, and cloves. Let the spices simmer in the water for a few minutes to infuse their flavors.\r\n\r\nAdd tea leaves: Add black tea leaves or tea bags to the water. Use about 1-2 teaspoons of tea leaves per cup of water, depending on how strong you like your chai. Let the tea leaves simmer in the water for a few minutes.\r\n\r\nAdd milk: Add milk to the saucepan. Use about half the amount of milk as water. For example, if you used 1 cup of water, add 1/2 cup of milk. Adjust the amount of milk based on your preference for the richness of the chai.\r\n\r\nSweeten (optional): Add sugar to taste if desired. Stir the chai to dissolve the sugar.\r\n\r\nSimmer: Let the chai simmer for a few more minutes to allow the flavors to blend together.\r\n\r\nStrain and serve: Once the chai is ready, strain it into cups to remove the tea leaves and spices. Serve hot and enjoy!', 10, 3, 29, 2, '/chai.jpeg');
 
 -- --------------------------------------------------------
 
@@ -400,7 +406,11 @@ INSERT INTO `req_ingredients` (`req_ingredient_id`, `recipe_id`, `ingredient_id`
 (28, 22, 1, 2.00, 'grams'),
 (29, 22, 10, 4.00, 'grams'),
 (30, 22, 18, 1.00, 'units'),
-(31, 22, 21, 1.00, 'units');
+(31, 22, 21, 1.00, 'units'),
+(32, 23, 64, 2.00, 'cup'),
+(33, 23, 8, 3.00, 'units'),
+(34, 23, 7, 5.00, 'grams'),
+(35, 23, 12, 3.00, 'units');
 
 -- --------------------------------------------------------
 
@@ -425,7 +435,8 @@ INSERT INTO `users` (`user_id`, `username`, `email`, `password`) VALUES
 (25, 'amey', 'ameypte@gmail.com', '2003'),
 (26, 'bhavesh', 'bhavesh@gmail.com', '2002'),
 (27, 'heramb', 'heramb@gmail.com', '2001'),
-(28, 'tanaya', 'tanaya@gamil.com', 'tanaya');
+(28, 'tanaya', 'tanaya@gamil.com', 'tanaya'),
+(29, 'Chetana', 'chetana@gmail.com', 'isha');
 
 -- --------------------------------------------------------
 
@@ -511,13 +522,13 @@ ALTER TABLE `comments`
 -- AUTO_INCREMENT for table `ingredients`
 --
 ALTER TABLE `ingredients`
-  MODIFY `ingredient_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=111;
+  MODIFY `ingredient_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=113;
 
 --
 -- AUTO_INCREMENT for table `ingredients_category`
 --
 ALTER TABLE `ingredients_category`
-  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `likes`
@@ -529,7 +540,7 @@ ALTER TABLE `likes`
 -- AUTO_INCREMENT for table `recipes`
 --
 ALTER TABLE `recipes`
-  MODIFY `recipe_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `recipe_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `recipe_category`
@@ -541,13 +552,13 @@ ALTER TABLE `recipe_category`
 -- AUTO_INCREMENT for table `req_ingredients`
 --
 ALTER TABLE `req_ingredients`
-  MODIFY `req_ingredient_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `req_ingredient_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- Constraints for dumped tables
