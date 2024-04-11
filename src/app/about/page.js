@@ -30,7 +30,7 @@ export default function page({ params }) {
                   needs.
                 </p>
                 <div class="flex flex-wrap items-center">
-                  <div class="w-full px-4 mb-6 sm:w-1/2 md:w-1/2 lg:mb-6">
+                  7<div class="w-full px-4 mb-6 sm:w-1/2 md:w-1/2 lg:mb-6">
                     <div class="p-6 bg-white dark:bg-gray-900">
                       <span class="text-blue-500 dark:text-blue-400">
                         <svg

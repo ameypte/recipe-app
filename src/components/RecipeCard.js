@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { FaHeart } from "react-icons/fa";
+import Image from "next/image";
 import { CiHeart } from "react-icons/ci";
 
 export default function RecipeCard({
@@ -22,9 +23,9 @@ export default function RecipeCard({
 
 
   return (
-    <div className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+    <div className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 ">
       <a href="#">
-        <img className="rounded-t-lg" src={imageUrl} alt={recipeName} />
+        <Image width={400} height={200} className="rounded-t-lg max h-80" src={imageUrl} alt={recipeName} />
       </a>
       <div className="p-5">
         <a href="#">
