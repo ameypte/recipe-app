@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import NavBar from "@/components/NavBar";
+import Image from "next/image";
 
 export default function page({ params }) {
   const { recipeId } = params;
@@ -59,16 +60,24 @@ export default function page({ params }) {
             </span> | Posted
             on: <span className="font-bold">Undefined date</span>
           </p>
-          <img
+          {/* <img
             class="h-auto rounded-lg "
             src=
             {recipe.image_url}
             alt="image description"
-          />
+          /> */}
+          <Image
+            src={recipe.image_url}
+            alt="recipe image"
+            width={500}
+            height={500}
+            // crop the image to a square
+            className="rounded-lg block mx-auto"
+          />s
         </div>
         {/* display servings and cooking time */}
 
-        <div className="flex flex-row justify-between mt-5">
+        <div className="flex flex-row justify-between mt-2">
           <div className="flex flex-col">
             <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
               Servings: <span className="font-bold">{recipe.servings}</span>
@@ -138,7 +147,30 @@ export default function page({ params }) {
           <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
             {recipe.instructions}
           </p>
+        </div>
 
+        <div className="comments">
+          <h2 class="mb-2 mt-5 text-xl font-bold text-gray-900 dark:text-white">
+            Comments
+          </h2>
+          <div className="post">
+            {/* textbox */}
+
+            <textarea
+              className="w-full h-24 px-3 py-2 text-base text-gray-700 placeholder-gray-400 border rounded-lg bg-gray-50 dark:bg-gray-700 dark:text-gray-200 border-gray-300 dark:border-gray-600 focus:outline-none focus:border-blue-500 focus:bg-white dark:focus:bg-gray-800 focus:shadow-outline focus:ring-1 focus:ring-blue-500"
+              name="comment"
+              id="comment"
+              placeholder="Add a comment"
+            ></textarea>
+            <div className="flex justify-end mt-2">
+              <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                Post
+              </button>
+            </div>
+
+
+
+          </div>
 
         </div>
       </div>
