@@ -25,7 +25,7 @@ export default function RecipeCard({
     setIsLiked(
       isLiked.some((likedRecipe) => likedRecipe.recipe_id === recipeId)
     );
-  }, [isLiked, recipeId]);
+  }, [isLiked, recipeId ]);
   console.log(isLiked2, "it is what it is");
   console.log(isLiked, "it is what it is");
 

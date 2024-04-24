@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 import NavBar from "@/components/NavBar";
 import Image from "next/image";
-import { get } from "@aptos-labs/ts-sdk";
 
 export default function page({ params }) {
   const { recipeId } = params;
