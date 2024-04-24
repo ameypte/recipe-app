@@ -2,16 +2,59 @@
 import React, { useEffect, useState } from "react";
 import NavBar from "@/components/NavBar";
 import Image from "next/image";
+import { get } from "@aptos-labs/ts-sdk";
 
 export default function page({ params }) {
   const { recipeId } = params;
   const [recipe, setRecipe] = useState([]);
   const [ingredients, setIngredients] = useState([]);
+  const [comments, setComments] = useState([]);
+  const [comment, setComment] = useState("");
+  const [user, setUser] = useState("");
 
   useEffect(() => {
+    setUser(localStorage.getItem("userId"));
     getRecipe();
     getIngredients();
+    getComments();
   }, []);
+
+  const getComments = async () => {
+    const responce = await fetch("/api/comments/get-comments", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ recipe_id: recipeId }),
+    });
+    // Sample responce
+    //   {
+    //     "comment_id": 4,
+    //     "recipe_id": 22,
+    //     "user_id": 23,
+    //     "comment_text": "Random comment: ",
+    //     "comment_date": "2024-04-23T18:58:31.000Z",
+    //     "username": "diksha"
+    // },
+    const data = await responce.json();
+
+    setComments(data);
+
+  };
+
+  const postComment = async () => {
+    // const recipe_id = data.recipe_id;
+    //     const user_id = data.user_id;
+    //     const comment_text = data.comment_text;
+    const responce = await fetch("/api/comments/post-comment", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ recipe_id: recipeId , user_id: user, comment_text: comment }),
+    });
+
+    const data = await responce.json();
+    setComment("");
+    await getComments();
+    alert("Comment posted successfully");
+  };
 
   const getIngredients = async () => {
     const responce = await fetch("/api/recipe-ingredients", {
@@ -24,9 +67,6 @@ export default function page({ params }) {
 
     setIngredients(data);
   }
-
-
-
 
   const getRecipe = async () => {
     const responce = await fetch("/api/recipe-info", {
@@ -154,24 +194,31 @@ export default function page({ params }) {
             Comments
           </h2>
           <div className="post">
-            {/* textbox */}
-
             <textarea
               className="w-full h-24 px-3 py-2 text-base text-gray-700 placeholder-gray-400 border rounded-lg bg-gray-50 dark:bg-gray-700 dark:text-gray-200 border-gray-300 dark:border-gray-600 focus:outline-none focus:border-blue-500 focus:bg-white dark:focus:bg-gray-800 focus:shadow-outline focus:ring-1 focus:ring-blue-500"
               name="comment"
               id="comment"
               placeholder="Add a comment"
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+
             ></textarea>
             <div className="flex justify-end mt-2">
-              <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+              <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={postComment}>
                 Post
               </button>
             </div>
-
-
-
           </div>
 
+          {comments.map((comment) => (
+            <div class="block p-6 mt-3 bg-white border border-gray-200 rounded-lg shadow  dark:bg-gray-800 dark:border-gray-700">
+              <div class="flex items-center justify-between mb-2">
+                <h5 class="text-lg font-bold tracking-tight text-gray-900 dark:text-white">{comment.username}</h5>
+                <p class="text-sm font-medium text-gray-500 dark:text-gray-400">{comment.comment_date}</p>
+              </div>
+              <p class="font-normal text-gray-700 dark:text-gray-400">{comment.comment_text}</p>
+            </div>
+          ))}
         </div>
       </div>
     </>

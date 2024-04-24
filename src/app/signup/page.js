@@ -8,7 +8,7 @@ export default function signup() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [acceptTerms, setAcceptTerms] = useState(false);
-
+  const [phoneNo, setPhoneNo] = useState(null);
   const handleUsernameChange = (e) => {
     setUsername(e.target.value);
   };

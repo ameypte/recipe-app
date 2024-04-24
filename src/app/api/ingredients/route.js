@@ -21,7 +21,7 @@ export const POST = async (req, res) => {
 
 export const GET = async (req, res) => {
   const ingredients_category = await query({
-    query: "select * from ingredients_category",
+    query: "select * from company",
   });
 
   if (ingredients_category.length > 0) {
