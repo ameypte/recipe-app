@@ -6,7 +6,7 @@ export const POST = async (req, res) => {
         const data = await req.json();
         const recipe_id = data.recipe_id;
         const comments = await query({
-            query: "SELECT * FROM comments WHERE recipe_id = ?",
+            query: "SELECT comments.*, users.username FROM comments JOIN users ON comments.user_id = users.user_id WHERE comments.recipe_id = ? ORDER BY comments.comment_date DESC",
             values: [recipe_id],
         });
         return NextResponse.json(comments);
