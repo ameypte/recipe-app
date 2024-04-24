@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import NavBar from "@/components/NavBar";
 import Image from "next/image";
-import { get } from "@aptos-labs/ts-sdk";
+// import { get } from "@aptos-labs/ts-sdk";
 
 export default function page({ params }) {
   const { recipeId } = params;
@@ -37,7 +37,6 @@ export default function page({ params }) {
     const data = await responce.json();
 
     setComments(data);
-
   };
 
   const postComment = async () => {
@@ -47,7 +46,11 @@ export default function page({ params }) {
     const responce = await fetch("/api/comments/post-comment", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ recipe_id: recipeId , user_id: user, comment_text: comment }),
+      body: JSON.stringify({
+        recipe_id: recipeId,
+        user_id: user,
+        comment_text: comment,
+      }),
     });
 
     const data = await responce.json();
@@ -66,7 +69,7 @@ export default function page({ params }) {
     const data = await responce.json();
 
     setIngredients(data);
-  }
+  };
 
   const getRecipe = async () => {
     const responce = await fetch("/api/recipe-info", {
@@ -79,8 +82,6 @@ export default function page({ params }) {
 
     setRecipe(data[0]);
   };
-
-
 
   return (
     <>
@@ -95,10 +96,8 @@ export default function page({ params }) {
 
         <div className=" mt-5 ">
           <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-            Recipe by: <span className="font-bold">
-              {recipe.recipe_by}
-            </span> | Posted
-            on: <span className="font-bold">Undefined date</span>
+            Recipe by: <span className="font-bold">{recipe.recipe_by}</span> |
+            Posted on: <span className="font-bold">Undefined date</span>
           </p>
           {/* <img
             class="h-auto rounded-lg "
@@ -113,7 +112,8 @@ export default function page({ params }) {
             height={500}
             // crop the image to a square
             className="rounded-lg block mx-auto"
-          />s
+          />
+          s
         </div>
         {/* display servings and cooking time */}
 
@@ -123,12 +123,14 @@ export default function page({ params }) {
               Servings: <span className="font-bold">{recipe.servings}</span>
             </p>
             <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-              Cook Time: <span className="font-bold">{recipe.cook_time}</span> minutes
+              Cook Time: <span className="font-bold">{recipe.cook_time}</span>{" "}
+              minutes
             </p>
           </div>
           <div className="flex flex-col">
             <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-              Recipe Category: <span className="font-bold">{recipe.recipe_category}</span>
+              Recipe Category:{" "}
+              <span className="font-bold">{recipe.recipe_category}</span>
             </p>
           </div>
         </div>
@@ -157,7 +159,6 @@ export default function page({ params }) {
                   </tr>
                 </thead>
                 <tbody>
-
                   {ingredients.map((ingredient) => (
                     <tr class="bg-white dark:bg-gray-700">
                       <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-200">
@@ -174,7 +175,6 @@ export default function page({ params }) {
                       </td>
                     </tr>
                   ))}
-
                 </tbody>
               </table>
             </div>
@@ -201,10 +201,12 @@ export default function page({ params }) {
               placeholder="Add a comment"
               value={comment}
               onChange={(e) => setComment(e.target.value)}
-
             ></textarea>
             <div className="flex justify-end mt-2">
-              <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={postComment}>
+              <button
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                onClick={postComment}
+              >
                 Post
               </button>
             </div>
@@ -213,10 +215,16 @@ export default function page({ params }) {
           {comments.map((comment) => (
             <div class="block p-6 mt-3 bg-white border border-gray-200 rounded-lg shadow  dark:bg-gray-800 dark:border-gray-700">
               <div class="flex items-center justify-between mb-2">
-                <h5 class="text-lg font-bold tracking-tight text-gray-900 dark:text-white">{comment.username}</h5>
-                <p class="text-sm font-medium text-gray-500 dark:text-gray-400">{comment.comment_date}</p>
+                <h5 class="text-lg font-bold tracking-tight text-gray-900 dark:text-white">
+                  {comment.username}
+                </h5>
+                <p class="text-sm font-medium text-gray-500 dark:text-gray-400">
+                  {comment.comment_date}
+                </p>
               </div>
-              <p class="font-normal text-gray-700 dark:text-gray-400">{comment.comment_text}</p>
+              <p class="font-normal text-gray-700 dark:text-gray-400">
+                {comment.comment_text}
+              </p>
             </div>
           ))}
         </div>
