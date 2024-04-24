@@ -44,7 +44,7 @@ def text_summary(text, isNew = False):
     
     if isNew:
         chat = model.start_chat()
-        chat.send_message("Act like you are a chef and food ai (specifically for indian food) according to this ansswe the questions correctly.")
+        chat.send_message("Act like you are a chef and food ai (specifically for indian food) Dont Generate Bold and Italic Output (*,**) give title in inside <strong> </strong> tag after <strong> </strong> add a <br/> and para text in <p> </p> tag and add 2</br> tag after every title and paragraph  data :  row :- {row},col :-{col}")
         response = chat.send_message(text)
         return response.text
     else:

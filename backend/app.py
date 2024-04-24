@@ -4,12 +4,11 @@ from flask_cors import CORS
 import json
 
 #import custom function
-from stock_analyzer import stock_analyzer
-from chat import text_summary
+
+from chef import text_summary
 
 app = Flask(__name__) 
 CORS(app)
-
 
 @app.route('/chef', methods=['POST'])
 def summarize_text():
