@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { query } from "@/lib/db";
 
-
 export const POST = async (req, res) => {
   let message, status;
 
@@ -12,8 +11,7 @@ export const POST = async (req, res) => {
   const email = data.email;
 
   const user = await query({
-    query:
-      "INSERT INTO `users`(`username`, `email`, `password`) VALUES (?,?,?)",
+    query: "INSERT INTO `user`(`username`, `email`, `password`) VALUES (?,?,?)",
     values: [username, email, password],
   });
 

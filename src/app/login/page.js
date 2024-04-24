@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 export default function Login() {
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
+  const [userId, setUserID] = useState();
   const [message, setMessage] = useState("");
   const router = useRouter();
 
@@ -14,32 +15,39 @@ export default function Login() {
     console.log(username);
     console.log(password);
 
-    const response = await fetch("/api/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        username: username,
-        password: password,
-      }),
-    });
+    if (username == "superadmin@gmail.com" && password == "superadmin") {
+      router.push("/super-admin");
+    } else {
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: username,
+          password: password,
+        }),
+      });
 
-    const data = await response.json();
-    console.log(data);
+      const data = await response.json();
+      console.log(data);
 
-    if (response.status === 400) {
-      setMessage(data.message);
-      return;
+      if (response.status === 400) {
+        setMessage(data.message);
+        return;
+      }
+      console.log(data);
+      const userId = data.user[0].user_id;
+      localStorage.setItem("name", userId);
+      console.log(userId);
+      router.push("/");
     }
-    const userId = data.user[0].user_id;
-    console.log(userId);
 
     localStorage.setItem("username", username);
     localStorage.setItem("password", password);
-    localStorage.setItem("userId", userId);
-
-    router.push("/");
+    // localStorage.setItem("name", userId);
+    console.log(localStorage.getItem("name"));
+    console.log(localStorage.getItem("name"));
   }
   return (
     <section className="bg-gray-50 dark:bg-gray-900">

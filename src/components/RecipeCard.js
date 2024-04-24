@@ -1,5 +1,5 @@
-"use client"
-import React, { useState } from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { FaHeart } from "react-icons/fa";
 import Image from "next/image";
@@ -13,19 +13,66 @@ export default function RecipeCard({
   recipeId,
   likes,
   recipe_category,
-  is_liked = false,
   recipe_by,
+  username,
+  user_id,
+  isLiked,
   posted_on,
 }) {
+  const [isLiked2, setIsLiked] = useState(false);
 
-  const [isLiked, setIsLiked] = useState(false);
+  useEffect(() => {
+    setIsLiked(
+      isLiked.some((likedRecipe) => likedRecipe.recipe_id === recipeId)
+    );
+  }, [isLiked, recipeId]);
+  console.log(isLiked2, "it is what it is");
+  console.log(isLiked, "it is what it is");
 
+  const [localLikes, setLocaLikes] = useState(likes);
+  // const [likeCount, setLikeCount] = useState(0);
+  function UpdateLocalLikes() {
+    getLIkes();
+    setLocaLikes((prev) => prev + 1);
+  }
+  async function getLIkes() {
+    // console.log();
 
+    // console.log(username);
+    if (username !== null) {
+      const responce = await fetch("/api/likes/set-likes", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          recipe_id: recipeId,
+          user_id: localStorage.getItem("name"),
+        }),
+      });
+
+      const data = await responce.json();
+      console.log(data);
+      if (
+        data.message == "Something went wrong User has already liked the post"
+      ) {
+        setIsLiked(() => true);
+      } else {
+      }
+      setIsLiked(() => true);
+    }
+  }
+
+  // setIngredients(data);
 
   return (
     <div className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 ">
       <a href="#">
-        <Image width={400} height={200} className="rounded-t-lg max h-80" src={imageUrl} alt={recipeName} />
+        <Image
+          width={400}
+          height={200}
+          className="rounded-t-lg max h-80"
+          src={imageUrl}
+          alt={recipeName}
+        />
       </a>
       <div className="p-5">
         <a href="#">
@@ -40,26 +87,17 @@ export default function RecipeCard({
         <div className="flex flex-row justify-between mt-1 text-sm">
           <div className="flex flex-col">
             <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-              Recipe by:{" "}
-              <span className="font-bold">
-                {recipe_by}
-              </span>
+              Recipe by: <span className="font-bold">{recipe_by}</span>
             </p>
             <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-              Cook Time:{" "}
-              <span className="font-bold">
-                {cookTime} minutes
-              </span>
+              Cook Time: <span className="font-bold">{cookTime} minutes</span>
             </p>
           </div>
           <div className="flex flex-col">
             <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-              Category: <span className="font-bold">
-                {recipe_category}
-              </span>
+              Category: <span className="font-bold">{recipe_category}</span>
             </p>
           </div>
-
         </div>
 
         <div className="flex items-center mt-2">
@@ -88,16 +126,20 @@ export default function RecipeCard({
           </Link>
           <button
             type="button"
-            onClick={() => setIsLiked(!isLiked)}
+            onClick={() =>
+              !isLiked2
+                ? UpdateLocalLikes()
+                : alert("You have Already LIked the POst")
+            }
             className="inline-flex items-center ml-3 px-3 py-2 text-sm font-medium text-center text-gray-900 bg-gray-100 rounded-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-blue-800"
           >
-            {isLiked ? (
+            {isLiked2 ? (
               <FaHeart className="text-red-500" size={22} />
             ) : (
               <CiHeart className="text-red-500" size={22} />
             )}
             <span className="ml-1 text-gray-700 dark:text-gray-400">
-              {likes}
+              {localLikes}
             </span>
           </button>
         </div>

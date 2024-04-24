@@ -4,27 +4,44 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import NavBar from "@/components/NavBar";
 
-
 export default function Home() {
   const [recipes, setRecipes] = useState([]);
-
+  const [isLiked, setIsLiked] = useState([]);
+  const [username, setUsername] = useState(null);
   useEffect(() => {
     getRecipes();
+    console.log(localStorage.getItem("name"));
+    setUsername(localStorage.getItem("name"));
+    getLikes();
   }, []);
 
+  const getLikes = async () => {
+    const response = await fetch("/api/likes/set-isliked", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        user_id: localStorage.getItem("name"),
+      }),
+    });
+
+    const data = await response.json();
+    console.log(data);
+    setIsLiked(data);
+  };
   const getRecipes = async () => {
     const responce = await fetch("/api/recipes", {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     });
-    console.log(document.cookie);
     const data = await responce.json();
+    console.log(data);
 
     setRecipes(data);
   };
   return (
     <div className="container mx-auto">
-
       <NavBar />
 
       <div className="bg-white dark:bg-gray-900 py-16">
@@ -91,11 +108,16 @@ export default function Home() {
               <RecipeCard
                 recipeName={recipe.recipe_name}
                 description={recipe.description}
+                user_id={recipe.user_id}
                 imageUrl={
-                  recipe.image_url? recipe.image_url : "https://www.allrecipes.com/thmb/fFW1o307WSqFFYQ3-QXYVpnFj6E=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/48727-Mikes-homemade-pizza-DDMFS-beauty-4x3-BG-2974-a7a9842c14e34ca699f3b7d7143256cf.jpg"
+                  recipe.image_url
+                    ? recipe.image_url
+                    : "https://www.allrecipes.com/thmb/fFW1o307WSqFFYQ3-QXYVpnFj6E=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/48727-Mikes-homemade-pizza-DDMFS-beauty-4x3-BG-2974-a7a9842c14e34ca699f3b7d7143256cf.jpg"
                 }
                 cookTime={recipe.cook_time}
+                username={username}
                 recipeId={recipe.recipe_id}
+                isLiked={isLiked}
                 likes={recipe.likes}
                 recipe_by={recipe.recipe_by}
                 recipe_category={recipe.recipe_category}
