@@ -10,7 +10,6 @@ export const GET = async (req, res) => {
             query: "SELECT * FROM RecipesList",
             values: [],
         });
-
         return NextResponse.json(recipes);
     }
     catch (e) {
