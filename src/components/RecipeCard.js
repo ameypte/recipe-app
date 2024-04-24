@@ -32,8 +32,12 @@ export default function RecipeCard({
   const [localLikes, setLocaLikes] = useState(likes);
   // const [likeCount, setLikeCount] = useState(0);
   function UpdateLocalLikes() {
-    getLIkes();
-    setLocaLikes((prev) => prev + 1);
+    if (localStorage.getItem("username")) {
+      setLocaLikes((prev) => prev + 1);
+      getLIkes();
+    } else {
+      alert("You Need to Login to Like the Post");
+    }
   }
   async function getLIkes() {
     // console.log();

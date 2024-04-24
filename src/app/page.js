@@ -12,7 +12,9 @@ export default function Home() {
     getRecipes();
     console.log(localStorage.getItem("name"));
     setUsername(localStorage.getItem("name"));
-    getLikes();
+    if (localStorage.getItem("username")) {
+      getLikes();
+    }
   }, []);
 
   const getLikes = async () => {
