@@ -20,13 +20,12 @@ export default function RecipeCard({
   posted_on,
 }) {
   const [isLiked2, setIsLiked] = useState(false);
-  if (isLiked.length > 0) {
-    useEffect(() => {
-      setIsLiked(
-        isLiked.some((likedRecipe) => likedRecipe.recipe_id === recipeId)
-      );
-    }, [isLiked, recipeId]);
-  }
+
+  useEffect(() => {
+    setIsLiked(
+      isLiked.some((likedRecipe) => likedRecipe.recipe_id === recipeId)
+    );
+  }, [isLiked, recipeId]);
   console.log(isLiked2, "it is what it is");
   console.log(isLiked, "it is what it is");
 
