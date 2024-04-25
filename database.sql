@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 23, 2024 at 08:10 PM
+-- Generation Time: Apr 25, 2024 at 09:48 AM
 -- Server version: 10.4.32-MariaDB
--- PHP Version: 8.1.25
+-- PHP Version: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -151,6 +151,16 @@ CREATE TABLE `comments` (
   `comment_date` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
+--
+-- Dumping data for table `comments`
+--
+
+INSERT INTO `comments` (`comment_id`, `recipe_id`, `user_id`, `comment_text`, `comment_date`) VALUES
+(4, 23, 30, 'mast chai', '2024-04-24 05:46:19'),
+(5, 24, NULL, 'loved it\n', '2024-04-24 18:52:32'),
+(6, 38, NULL, 'you guys will love it', '2024-04-25 03:35:08'),
+(7, 38, 31, 'you will love it\n', '2024-04-25 03:51:04');
+
 -- --------------------------------------------------------
 
 --
@@ -279,7 +289,20 @@ INSERT INTO `ingredients` (`ingredient_id`, `name`, `category_id`) VALUES
 (109, 'Safflower Oil', 6),
 (110, 'Truffle Oil', 6),
 (111, 'Cold Water', 7),
-(112, 'Warm Water', 7);
+(112, 'Warm Water', 7),
+(113, 'Lentils', 8),
+(114, 'Black Lentils (Urad Dal)', 8),
+(115, 'Red Lentils (Masoor Dal)', 8),
+(116, 'Green Lentils (Puy Lentils)', 8),
+(117, 'Brown Lentils', 8),
+(118, 'Yellow Lentils (Moong Dal)', 8),
+(119, 'Split Yellow Lentils (Toor Dal)', 8),
+(120, 'French Lentils (Lentilles du Puy)', 8),
+(121, 'Beluga Lentils', 8),
+(122, 'Coral Lentils', 8),
+(123, 'Spanish Pardina Lentils', 8),
+(124, 'Black-eyed Peas (Lobia)', 8),
+(125, 'Chickpeas (Garbanzo Beans)', 8);
 
 -- --------------------------------------------------------
 
@@ -303,7 +326,8 @@ INSERT INTO `ingredients_category` (`category_id`, `category_name`) VALUES
 (4, 'Dairy'),
 (5, 'Meat'),
 (6, 'Oils'),
-(7, 'Water');
+(7, 'Water'),
+(8, 'lentils');
 
 -- --------------------------------------------------------
 
@@ -317,6 +341,19 @@ CREATE TABLE `likes` (
   `user_id` int(11) DEFAULT NULL,
   `liked_date` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Dumping data for table `likes`
+--
+
+INSERT INTO `likes` (`like_id`, `recipe_id`, `user_id`, `liked_date`) VALUES
+(4, 22, 26, '2024-04-24 05:43:31'),
+(5, 23, 26, '2024-04-24 05:43:41'),
+(6, 23, 27, '2024-04-24 05:45:16'),
+(7, 24, 27, '2024-04-24 05:45:19'),
+(8, 24, 30, '2024-04-24 21:22:44'),
+(9, 22, 30, '2024-04-24 21:22:45'),
+(10, 22, 31, '2024-04-25 03:35:41');
 
 -- --------------------------------------------------------
 
@@ -342,7 +379,10 @@ CREATE TABLE `recipes` (
 
 INSERT INTO `recipes` (`recipe_id`, `title`, `description`, `instructions`, `cook_time`, `servings`, `user_id`, `recipe_category_id`, `image_url`) VALUES
 (22, 'Maggie', 'a simple 2 minute snack', 'Sure, here are the steps to prepare Maggi noodles:\n\n1. Boil water in a pan. You can add a few drops of oil and a pinch of salt to the water to prevent the noodles from sticking together.\n\n2. Once the water is boiling, break the Maggi noodle cake into four parts and add it to the boiling water.\n\n3. Let the noodles cook for about 2 minutes. Stir occasionally to ensure they cook evenly.\n\n4. While the noodles are cooking, open the Maggi tastemaker packet and keep it aside.\n\n5. After 2 minutes, add the Maggi tastemaker to the noodles. Stir well to ensure the tastemaker mixes evenly with the noodles.\n\n6. Let the noodles cook for another 1-2 minutes, or until the water has evaporated and the noodles are cooked to your desired consistency.\n\n7. Once the noodles are ready, turn off the heat and let them sit for a minute to cool down slightly.\n\n8. Serve the Maggi noodles hot, garnished with chopped vegetables or herbs if desired. Enjoy!', 5, 2, 28, 5, '/maggie.jpg'),
-(23, 'Chai', 'Favourite Indian Beverage', 'Boil water: In a saucepan, bring water to a boil.\r\n\r\nAdd spices (optional): If you\'re using spices, add them to the boiling water. Common spices used in chai include crushed cardamom pods, cinnamon sticks, ginger slices, and cloves. Let the spices simmer in the water for a few minutes to infuse their flavors.\r\n\r\nAdd tea leaves: Add black tea leaves or tea bags to the water. Use about 1-2 teaspoons of tea leaves per cup of water, depending on how strong you like your chai. Let the tea leaves simmer in the water for a few minutes.\r\n\r\nAdd milk: Add milk to the saucepan. Use about half the amount of milk as water. For example, if you used 1 cup of water, add 1/2 cup of milk. Adjust the amount of milk based on your preference for the richness of the chai.\r\n\r\nSweeten (optional): Add sugar to taste if desired. Stir the chai to dissolve the sugar.\r\n\r\nSimmer: Let the chai simmer for a few more minutes to allow the flavors to blend together.\r\n\r\nStrain and serve: Once the chai is ready, strain it into cups to remove the tea leaves and spices. Serve hot and enjoy!', 10, 3, 29, 2, '/chai.jpeg');
+(23, 'Chai', 'Favourite Indian Beverage', 'Boil water: In a saucepan, bring water to a boil.\r\n\r\nAdd spices (optional): If you\'re using spices, add them to the boiling water. Common spices used in chai include crushed cardamom pods, cinnamon sticks, ginger slices, and cloves. Let the spices simmer in the water for a few minutes to infuse their flavors.\r\n\r\nAdd tea leaves: Add black tea leaves or tea bags to the water. Use about 1-2 teaspoons of tea leaves per cup of water, depending on how strong you like your chai. Let the tea leaves simmer in the water for a few minutes.\r\n\r\nAdd milk: Add milk to the saucepan. Use about half the amount of milk as water. For example, if you used 1 cup of water, add 1/2 cup of milk. Adjust the amount of milk based on your preference for the richness of the chai.\r\n\r\nSweeten (optional): Add sugar to taste if desired. Stir the chai to dissolve the sugar.\r\n\r\nSimmer: Let the chai simmer for a few more minutes to allow the flavors to blend together.\r\n\r\nStrain and serve: Once the chai is ready, strain it into cups to remove the tea leaves and spices. Serve hot and enjoy!', 10, 3, 29, 2, '/chai.jpeg'),
+(24, 'Paneer Butter Masala', 'Paneer butter masala is a classic North Indian dish featuring cubes of soft paneer (Indian cottage cheese) cooked in a creamy and flavorful tomato-based sauce. This rich and indulgent curry is infused with aromatic spices like cumin, coriander, and garam masala, and finished with a touch of butter and cream for a luxurious texture. It\'s a beloved vegetarian dish that pairs perfectly with naan, roti, or steamed rice, making it a favorite choice for both casual dinners and special ', 'Heat oil and butter in a pan over medium heat. Add chopped onions and sauté until they turn golden brown.\r\nAdd ginger-garlic paste and sauté for another minute until the raw smell disappears.\r\nStir in the tomato puree and cook until the oil starts to separate from the mixture, stirring occasionally.\r\nAdd cumin powder, coriander powder, turmeric powder, red chili powder, and salt. Mix well and cook for 2-3 minutes.\r\nAdd the paneer cubes and gently stir to coat them with the masala.\r\nPour in the heavy cream and mix until well combined. Let it simmer for 3-4 minutes until the sauce thickens slightly.\r\nSprinkle garam masala over the mixture and give it a final stir.\r\nGarnish with fresh coriander leaves and serve hot with naan, roti, or rice.', 30, 3, 30, 3, '/pbm.jpeg'),
+(38, 'Butter Chicken', 'Butter Chicken, also known as Murgh Makhani, is a classic and beloved Indian dish renowned for its rich, creamy, and mildly spiced tomato-based sauce. Tender pieces of chicken are marinated in a yogurt and spice mixture, then cooked to perfection in a flavorful sauce made with butter, cream, tomatoes, and aromatic spices. The dish is characterized by its vibrant orange-red color and velvety texture, which is achieved by simmering the chicken in the creamy sauce until it is infused with all the flavors.', 'In a bowl, combine all the ingredients for the marinade. Add the chicken pieces and mix until well coated. Cover and refrigerate for at least 1 hour, or preferably overnight.\r\nHeat 1 tablespoon of butter and 1 tablespoon of oil in a large skillet or pan over medium heat. Add the marinated chicken pieces and cook until they are browned on all sides and cooked through. Remove the chicken from the pan and set aside.\r\nIn the same pan, add the remaining butter and oil. Add the chopped onion and sauté until it becomes soft and translucent.\r\nAdd the minced garlic, grated ginger, and green chilies (if using). Sauté for another 2-3 minutes until fragrant.\r\nStir in the tomato puree and cook for 5-7 minutes, stirring occasionally, until the mixture thickens and the raw flavor of the tomatoes is cooked off.\r\nAdd the red chili powder, garam masala, ground coriander, turmeric powder, and salt. Mix well and cook for another 2 minutes.\r\nPour in the heavy cream and honey (or sugar). Stir until everything is well combined and the sauce is creamy.\r\nAdd the cooked chicken pieces back to the pan. Stir to coat the chicken pieces with the sauce. Simmer for 5-10 minutes, allowing the flavors to meld together.\r\nTaste and adjust seasoning if needed. If the sauce is too thick, you can add a little water to reach your desired consistency.\r\nGarnish with fresh cilantro leaves and serve hot with rice, naan, or roti.', 45, 4, 31, 3, '/butterchicken.jpg'),
+(39, 'Daal Makhani', 'Daal Makhani is a delicious Indian dish made with black lentils (urad dal) and kidney beans (rajma), cooked with spices, butter, and cream. ', '1 cup whole black lentils (urad dal)\r\n1/4 cup kidney beans (rajma)\r\n3 cups water for soaking\r\n3 cups water for pressure cooking\r\n2 tablespoons butter or ghee\r\n1 tablespoon oil\r\n1 large onion, finely chopped\r\n2 tomatoes, pureed\r\n1 tablespoon ginger-garlic paste\r\n2 green chilies, slit\r\n1 teaspoon cumin seeds\r\n1 teaspoon garam masala\r\n1 teaspoon red chili powder\r\n1/2 teaspoon turmeric powder\r\n1 teaspoon coriander powder\r\n1/2 cup cream\r\nSalt to taste\r\nChopped coriander leaves for garnish', 40, 3, 30, 3, '/daal.jpeg');
 
 -- --------------------------------------------------------
 
@@ -410,7 +450,31 @@ INSERT INTO `req_ingredients` (`req_ingredient_id`, `recipe_id`, `ingredient_id`
 (32, 23, 64, 2.00, 'cup'),
 (33, 23, 8, 3.00, 'units'),
 (34, 23, 7, 5.00, 'grams'),
-(35, 23, 12, 3.00, 'units');
+(35, 23, 12, 3.00, 'units'),
+(36, 24, 19, 2.00, 'units'),
+(37, 24, 21, 2.00, 'units'),
+(38, 24, 101, 3.00, 'Teaspoon'),
+(39, 24, 1, 2.00, 'Teaspoon'),
+(40, 24, 64, 1.00, 'cup'),
+(41, 24, 65, 2.00, 'Teaspoon'),
+(42, 24, 78, 200.00, 'grams'),
+(43, 24, 10, 3.00, 'Teaspoon'),
+(44, 38, 82, 500.00, 'grams'),
+(45, 38, 1, 2.00, 'Teaspoon'),
+(46, 38, 6, 2.00, 'Teaspoon'),
+(47, 38, 10, 2.00, 'Teaspoon'),
+(48, 38, 21, 2.00, 'units'),
+(49, 38, 19, 2.00, 'units'),
+(50, 38, 98, 2.00, 'Teaspoon'),
+(51, 38, 65, 3.00, 'Teaspoon'),
+(52, 38, 71, 1.00, 'cup'),
+(53, 39, 114, 1.00, 'cup'),
+(54, 39, 111, 4.00, 'cup'),
+(55, 39, 65, 2.00, 'Teaspoon'),
+(56, 39, 19, 2.00, 'units'),
+(57, 39, 1, 2.00, 'Teaspoon'),
+(58, 39, 10, 2.00, 'Teaspoon'),
+(59, 39, 101, 2.00, 'Teaspoon');
 
 -- --------------------------------------------------------
 
@@ -436,7 +500,9 @@ INSERT INTO `users` (`user_id`, `username`, `email`, `password`) VALUES
 (26, 'bhavesh', 'bhavesh@gmail.com', '2002'),
 (27, 'heramb', 'heramb@gmail.com', '2001'),
 (28, 'tanaya', 'tanaya@gamil.com', 'tanaya'),
-(29, 'Chetana', 'chetana@gmail.com', 'isha');
+(29, 'Chetana', 'chetana@gmail.com', 'isha'),
+(30, 'bhaveshxop', 'bhaveshxop@gmail.com', 'bhavesh123'),
+(31, 'admin', 'admin@gmail.com', '123');
 
 -- --------------------------------------------------------
 
@@ -516,31 +582,31 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `comment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `comment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `ingredients`
 --
 ALTER TABLE `ingredients`
-  MODIFY `ingredient_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=113;
+  MODIFY `ingredient_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=126;
 
 --
 -- AUTO_INCREMENT for table `ingredients_category`
 --
 ALTER TABLE `ingredients_category`
-  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `likes`
 --
 ALTER TABLE `likes`
-  MODIFY `like_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `like_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `recipes`
 --
 ALTER TABLE `recipes`
-  MODIFY `recipe_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `recipe_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- AUTO_INCREMENT for table `recipe_category`
@@ -552,13 +618,13 @@ ALTER TABLE `recipe_category`
 -- AUTO_INCREMENT for table `req_ingredients`
 --
 ALTER TABLE `req_ingredients`
-  MODIFY `req_ingredient_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `req_ingredient_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- Constraints for dumped tables
