@@ -7,6 +7,8 @@ import RecipeCard from "@/components/RecipeCard";
 export default function RecipeWizard() {
   const [recipes, setRecipes] = useState([]);
   const [username, setUsername] = useState();
+  const [isLiked, setIsLiked] = useState([]);
+
   const [checkedIngredients, setCheckedIngredients] = useState([]);
   const [selectedCat, setSelectedCat] = useState("Select Category");
   const [checkedCategoryId, setcheckCategoryId] = useState([]);
@@ -21,6 +23,9 @@ export default function RecipeWizard() {
     getRecipes();
     getRecipeIngredients();
     getRecipeCategories();
+    if (localStorage.getItem("username")) {
+      getLikes();
+    }
   }, []);
 
   const handleCheckboxChange = (Ingredient) => {
@@ -86,9 +91,22 @@ export default function RecipeWizard() {
     setIngredient(data.ingredients);
     console.log(data);
   };
-  const getRecipesByIngredients_ID = async (
-    ids
-  ) => {
+  const getLikes = async () => {
+    const response = await fetch("/api/likes/set-isliked", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        user_id: localStorage.getItem("name"),
+      }),
+    });
+
+    const data = await response.json();
+    console.log(data);
+    setIsLiked(data);
+  };
+  const getRecipesByIngredients_ID = async (ids) => {
     const responce = await fetch("/api/find-recipe/", {
       method: "POST",
       headers: {
@@ -99,8 +117,6 @@ export default function RecipeWizard() {
     const data = await responce.json();
     console.log(data.recipes);
     setFindRecipeIngrediensts(data.recipes[0]);
-
-
   };
   const getRecipeIngredients = async () => {
     const response = await fetch("/api/ingredients", {
@@ -203,8 +219,9 @@ export default function RecipeWizard() {
               {/* Left Dropdown Content */}
               {ingredientsCategories.length > 0 ? (
                 <div
-                  className={`absolute mt-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 divide-y divide-gray-100 rounded-lg shadow ${isDropdownVisible ? "block" : "hidden"
-                    }`}
+                  className={`absolute mt-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 divide-y divide-gray-100 rounded-lg shadow ${
+                    isDropdownVisible ? "block" : "hidden"
+                  }`}
                 >
                   <a
                     href="#"
@@ -262,8 +279,9 @@ export default function RecipeWizard() {
               {/* Right Dropdown Content */}
               {ingredientsCategories.length > 0 ? (
                 <div
-                  className={`absolute mt-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 divide-y divide-gray-100 rounded-lg shadow ${isDropdownVisible2 ? "block" : "hidden"
-                    }`}
+                  className={`absolute mt-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 divide-y divide-gray-100 rounded-lg shadow ${
+                    isDropdownVisible2 ? "block" : "hidden"
+                  }`}
                 >
                   <a
                     href="#"
@@ -319,7 +337,6 @@ export default function RecipeWizard() {
                       className="flex flex-wrap items-center justify-center mt-3 mb-3 sm:mt-0 sm:mb-0 sm:ms-0 sm:me-2"
                     >
                       <li className="flex items-center">
-
                         <input
                           id={`checkbox-${ingredient.ingredient_id}`}
                           type="checkbox"
@@ -337,13 +354,11 @@ export default function RecipeWizard() {
                         >
                           {ingredient.name}
                         </label>
-
                       </li>
                     </ul>
                   </div>
                 ))}
             </div>
-
           </div>
           <div className="flex justify-end mt-5">
             <button
@@ -401,30 +416,30 @@ export default function RecipeWizard() {
             */}
 
             {findRecipeIngrediensts.length > 0 &&
-              findRecipeIngrediensts.map((recipe) => (
-
-                recipe.recipe_category === selectedCat ||
-                selectedCat === "All"
-                && (
-                  <RecipeCard
-                    key={recipe.recipe_id}
-                    recipeId={recipe.recipe_id}
-                    imageUrl={
-                      recipe.image_url ? recipe.image_url : "https://www.allrecipes.com/thmb/fFW1o307WSqFFYQ3-QXYVpnFj6E=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/48727-Mikes-homemade-pizza-DDMFS-beauty-4x3-BG-2974-a7a9842c14e34ca699f3b7d7143256cf.jpg"
-                    }
-                    recipeName={recipe.recipe_name}
-                    description={recipe.description}
-                    cookTime={recipe.cook_time}
-                    recipe_by={recipe.recipe_by}
-                    recipe_category={recipe.recipe_category}
-                  />
-                )
-
-              ))}
-
+              findRecipeIngrediensts.map(
+                (recipe) =>
+                  recipe.recipe_category === selectedCat ||
+                  (selectedCat === "All" && (
+                    <RecipeCard
+                      key={recipe.recipe_id}
+                      recipeId={recipe.recipe_id}
+                      imageUrl={
+                        recipe.image_url
+                          ? recipe.image_url
+                          : "https://www.allrecipes.com/thmb/fFW1o307WSqFFYQ3-QXYVpnFj6E=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/48727-Mikes-homemade-pizza-DDMFS-beauty-4x3-BG-2974-a7a9842c14e34ca699f3b7d7143256cf.jpg"
+                      }
+                      likes={recipe.likes_count}
+                      recipeName={recipe.recipe_name}
+                      description={recipe.description}
+                      cookTime={recipe.cook_time}
+                      isLiked={isLiked}
+                      recipe_by={recipe.recipe_by}
+                      recipe_category={recipe.recipe_category}
+                    />
+                  ))
+              )}
           </div>
         </div>
-
       </div>
     </div>
   );
