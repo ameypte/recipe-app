@@ -13,7 +13,7 @@ export default function page({ params }) {
   const [user, setUser] = useState("");
 
   useEffect(() => {
-    setUser(localStorage.getItem("userId"));
+    setUser(localStorage.getItem("name"));
     getRecipe();
     getIngredients();
     getComments();
@@ -96,7 +96,7 @@ export default function page({ params }) {
 
         <div className=" mt-5 ">
           <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-            Recipe by: <span className="font-bold">{recipe.recipe_by}</span> 
+            Recipe by: <span className="font-bold">{recipe.recipe_by}</span>
           </p>
           {/* <img
             class="h-auto rounded-lg "

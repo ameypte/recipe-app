@@ -1,4 +1,3 @@
-
 "use client";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
@@ -21,13 +20,12 @@ export default function RecipeCard({
   posted_on,
 }) {
   const [isLiked2, setIsLiked] = useState(false);
-  if (isLiked.length > 0) {
-    useEffect(() => {
-      setIsLiked(
-        isLiked.some((likedRecipe) => likedRecipe.recipe_id === recipeId)
-      );
-    }, [isLiked, recipeId]);
-  }
+
+  useEffect(() => {
+    setIsLiked(
+      isLiked.some((likedRecipe) => likedRecipe.recipe_id === recipeId)
+    );
+  }, [isLiked, recipeId]);
 
   const [localLikes, setLocalLikes] = useState(likes);
 
@@ -53,7 +51,9 @@ export default function RecipeCard({
 
       const data = await response.json();
       console.log(data);
-      if (data.message === "Something went wrong User has already liked the post") {
+      if (
+        data.message === "Something went wrong User has already liked the post"
+      ) {
         setIsLiked(true);
       }
       setIsLiked(true);
@@ -63,7 +63,8 @@ export default function RecipeCard({
   // Logic to truncate description if it exceeds 15 words
   let truncatedDescription = description;
   if (description.split(" ").length > 15) {
-    truncatedDescription = description.split(" ").slice(0, 15).join(" ") + " ......";
+    truncatedDescription =
+      description.split(" ").slice(0, 15).join(" ") + " ......";
   }
 
   return (
