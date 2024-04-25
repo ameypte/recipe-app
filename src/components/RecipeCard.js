@@ -1,3 +1,4 @@
+
 "use client";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
@@ -27,25 +28,21 @@ export default function RecipeCard({
       );
     }, [isLiked, recipeId]);
   }
-  console.log(isLiked2, "it is what it is");
-  console.log(isLiked, "it is what it is");
 
-  const [localLikes, setLocaLikes] = useState(likes);
-  // const [likeCount, setLikeCount] = useState(0);
+  const [localLikes, setLocalLikes] = useState(likes);
+
   function UpdateLocalLikes() {
     if (localStorage.getItem("username")) {
-      setLocaLikes((prev) => prev + 1);
-      getLIkes();
+      setLocalLikes((prev) => prev + 1);
+      getLikes();
     } else {
-      alert("You Need to Login to Like the Post");
+      alert("You need to login to like the post");
     }
   }
-  async function getLIkes() {
-    // console.log();
 
-    // console.log(username);
+  async function getLikes() {
     if (username !== null) {
-      const responce = await fetch("/api/likes/set-likes", {
+      const response = await fetch("/api/likes/set-likes", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -54,22 +51,23 @@ export default function RecipeCard({
         }),
       });
 
-      const data = await responce.json();
+      const data = await response.json();
       console.log(data);
-      if (
-        data.message == "Something went wrong User has already liked the post"
-      ) {
-        setIsLiked(() => true);
-      } else {
+      if (data.message === "Something went wrong User has already liked the post") {
+        setIsLiked(true);
       }
-      setIsLiked(() => true);
+      setIsLiked(true);
     }
   }
 
-  // setIngredients(data);
+  // Logic to truncate description if it exceeds 15 words
+  let truncatedDescription = description;
+  if (description.split(" ").length > 15) {
+    truncatedDescription = description.split(" ").slice(0, 15).join(" ") + " ......";
+  }
 
   return (
-    <div className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 ">
+    <div className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
       <a href="#">
         <Image
           width={400}
@@ -86,7 +84,7 @@ export default function RecipeCard({
           </h5>
         </a>
         <p className="font-normal text-gray-700 dark:text-gray-400">
-          {description}
+          {truncatedDescription}
         </p>
         <hr className="my-5" />
         <div className="flex flex-row justify-between mt-1 text-sm">
@@ -121,9 +119,9 @@ export default function RecipeCard({
               >
                 <path
                   stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
                   d="M1 5h12m0 0L9 1m4 4L9 9"
                 />
               </svg>
@@ -134,7 +132,7 @@ export default function RecipeCard({
             onClick={() =>
               !isLiked2
                 ? UpdateLocalLikes()
-                : alert("You have Already LIked the POst")
+                : alert("You have already liked the post")
             }
             className="inline-flex items-center ml-3 px-3 py-2 text-sm font-medium text-center text-gray-900 bg-gray-100 rounded-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-blue-800"
           >

@@ -11,7 +11,7 @@ export default function NavBar() {
   useEffect(() => {
     setUsername(localStorage.getItem("username"));
   }, []);
-  return (
+  return (  
     <nav
       className="bg-white border-gray-200 dark:bg-gray-900"
       style={{
