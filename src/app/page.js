@@ -8,6 +8,9 @@ export default function Home() {
   const [recipes, setRecipes] = useState([]);
   const [isLiked, setIsLiked] = useState([]);
   const [username, setUsername] = useState(null);
+  const [searchRecipe, setSearchRecipe] = useState([]);
+  const [recipeName, setRecipeName] = useState("");
+  // const []
   useEffect(() => {
     getRecipes();
     console.log(localStorage.getItem("name"));
@@ -16,7 +19,28 @@ export default function Home() {
       getLikes();
     }
   }, []);
+  const getSearchRecipes = async (e) => {
+    console.log(recipeName);
+    e.preventDefault();
+    // if (recipeName == " " || recipeName == null || recipeName == "") {
+    //   alert("Enter Recipe Name");
+    //   return;
+    // }
+    const response = await fetch("api/search-recipes", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        recipe_name: `%${recipeName}%`,
+      }),
+    });
 
+    const data = await response.json();
+    console.log(data.ingredients);
+    setSearchRecipe(data.ingredients);
+    // setIsLiked(data);
+  };
   const getLikes = async () => {
     const response = await fetch("/api/likes/set-isliked", {
       method: "POST",
@@ -91,10 +115,12 @@ export default function Home() {
               id="default-search"
               className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Search recipes"
+              onChange={(e) => setRecipeName(e.target.value)}
               required
             />
             <button
-              type="submit"
+              type="button"
+              onClick={getSearchRecipes}
               className="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
             >
               Search
@@ -106,25 +132,46 @@ export default function Home() {
         <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 m-10">
           <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {/*  map  */}
-            {recipes.map((recipe) => (
-              <RecipeCard
-                recipeName={recipe.recipe_name}
-                description={recipe.description}
-                user_id={recipe.user_id}
-                imageUrl={
-                  recipe.image_url
-                    ? recipe.image_url
-                    : "https://www.allrecipes.com/thmb/fFW1o307WSqFFYQ3-QXYVpnFj6E=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/48727-Mikes-homemade-pizza-DDMFS-beauty-4x3-BG-2974-a7a9842c14e34ca699f3b7d7143256cf.jpg"
-                }
-                cookTime={recipe.cook_time}
-                username={username}
-                recipeId={recipe.recipe_id}
-                isLiked={isLiked}
-                likes={recipe.likes}
-                recipe_by={recipe.recipe_by}
-                recipe_category={recipe.recipe_category}
-              />
-            ))}
+            {console.log("Serahc Recipes ... ", searchRecipe)}
+            {searchRecipe.length > 0
+              ? searchRecipe.map((recipe) => (
+                  <RecipeCard
+                    recipeName={recipe.recipe_name}
+                    description={recipe.description}
+                    user_id={recipe.user_id}
+                    imageUrl={
+                      recipe.image_url
+                        ? recipe.image_url
+                        : "https://www.allrecipes.com/thmb/fFW1o307WSqFFYQ3-QXYVpnFj6E=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/48727-Mikes-homemade-pizza-DDMFS-beauty-4x3-BG-2974-a7a9842c14e34ca699f3b7d7143256cf.jpg"
+                    }
+                    cookTime={recipe.cook_time}
+                    username={username}
+                    recipeId={recipe.recipe_id}
+                    isLiked={isLiked}
+                    likes={recipe.likes}
+                    recipe_by={recipe.recipe_by}
+                    recipe_category={recipe.recipe_category}
+                  />
+                ))
+              : recipes.map((recipe) => (
+                  <RecipeCard
+                    recipeName={recipe.recipe_name}
+                    description={recipe.description}
+                    user_id={recipe.user_id}
+                    imageUrl={
+                      recipe.image_url
+                        ? recipe.image_url
+                        : "https://www.allrecipes.com/thmb/fFW1o307WSqFFYQ3-QXYVpnFj6E=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/48727-Mikes-homemade-pizza-DDMFS-beauty-4x3-BG-2974-a7a9842c14e34ca699f3b7d7143256cf.jpg"
+                    }
+                    cookTime={recipe.cook_time}
+                    username={username}
+                    recipeId={recipe.recipe_id}
+                    isLiked={isLiked}
+                    likes={recipe.likes}
+                    recipe_by={recipe.recipe_by}
+                    recipe_category={recipe.recipe_category}
+                  />
+                ))}
           </div>
         </div>
       </div>
