@@ -96,8 +96,7 @@ export default function page({ params }) {
 
         <div className=" mt-5 ">
           <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-            Recipe by: <span className="font-bold">{recipe.recipe_by}</span> |
-            Posted on: <span className="font-bold">Undefined date</span>
+            Recipe by: <span className="font-bold">{recipe.recipe_by}</span> 
           </p>
           {/* <img
             class="h-auto rounded-lg "
@@ -110,10 +109,11 @@ export default function page({ params }) {
             alt="recipe image"
             width={500}
             height={500}
+            // crop the iamge in a square
+
             // crop the image to a square
             className="rounded-lg block mx-auto"
           />
-          s
         </div>
         {/* display servings and cooking time */}
 
