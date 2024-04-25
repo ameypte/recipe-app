@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import RecipeCard from "@/components/RecipeCard";
 import { useEffect, useState } from "react";
 import Link from "next/link";
@@ -8,9 +8,11 @@ export default function Home() {
   const [recipes, setRecipes] = useState([]);
   const [isLiked, setIsLiked] = useState([]);
   const [username, setUsername] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredRecipes, setFilteredRecipes] = useState([]);
+
   useEffect(() => {
     getRecipes();
-    console.log(localStorage.getItem("name"));
     setUsername(localStorage.getItem("name"));
     if (localStorage.getItem("username")) {
       getLikes();
@@ -29,25 +31,31 @@ export default function Home() {
     });
 
     const data = await response.json();
-    console.log(data);
     setIsLiked(data);
   };
+
   const getRecipes = async () => {
-    const responce = await fetch("/api/recipes", {
+    const response = await fetch("/api/recipes", {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     });
-    const data = await responce.json();
-    console.log(data);
-
+    const data = await response.json();
     setRecipes(data);
+    setFilteredRecipes(data); // Initially, display all recipes
   };
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    const filtered = recipes.filter((recipe) =>
+      recipe.description.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setFilteredRecipes(filtered);
+  };
+
   return (
     <div className="container mx-auto">
       <NavBar />
-
       <div className="bg-white dark:bg-gray-900 py-16">
-        {/* tag line */}
         <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <p className="mt-1 text-4xl font-extrabold text-gray-900 dark:text-white sm:text-5xl sm:tracking-tight lg:text-6xl">
@@ -59,9 +67,10 @@ export default function Home() {
             </p>
           </div>
         </div>
-
-        {/* search bar */}
-        <form className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
+        <form
+          onSubmit={handleSearch}
+          className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8"
+        >
           <label
             htmlFor="default-search"
             className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
@@ -79,9 +88,9 @@ export default function Home() {
               >
                 <path
                   stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
                   d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
                 />
               </svg>
@@ -91,6 +100,8 @@ export default function Home() {
               id="default-search"
               className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Search recipes"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               required
             />
             <button
@@ -101,13 +112,11 @@ export default function Home() {
             </button>
           </div>
         </form>
-
-        {/* container to display recipes */}
-        <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 m-10">
-          <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {/*  map  */}
-            {recipes.map((recipe) => (
+        <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 m-10">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {filteredRecipes.map((recipe) => (
               <RecipeCard
+                key={recipe.recipe_id}
                 recipeName={recipe.recipe_name}
                 description={recipe.description}
                 user_id={recipe.user_id}
@@ -126,8 +135,10 @@ export default function Home() {
               />
             ))}
           </div>
-        </div>
+          </div>
       </div>
     </div>
   );
 }
+
+       
