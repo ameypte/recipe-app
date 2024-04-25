@@ -19,7 +19,8 @@ export default function AddRecipe() {
 
   const [ingredientsCategories, setIngredientsCategories] = useState([]);
   const [ingredients, setIngredients] = useState([]);
-  const [selectedIngridentCategory, setSelectedIngridentCategory] = useState("");
+  const [selectedIngridentCategory, setSelectedIngridentCategory] =
+    useState("");
   const [selectedIngredient, setSelectedIngredient] = useState("");
   const [quantity, setQuantity] = useState("");
   const [unit, setUnit] = useState("");
@@ -104,7 +105,7 @@ export default function AddRecipe() {
     formData.set("instructions", instructions);
     formData.set("cook_time", cookTime);
     formData.set("servings", servings);
-    formData.set("user_id", localStorage.getItem("userId"));
+    formData.set("user_id", localStorage.getItem("name"));
     formData.set("recipe_category_id", selectedRecipeCategory);
     formData.set("req_ingredients", JSON.stringify(req_ingredients));
     formData.set("file", recipeImage);
@@ -124,8 +125,7 @@ export default function AddRecipe() {
     if (response.status === 500) {
       alert(responseData.message);
     }
-  }
-
+  };
 
   const getRecipeIngredients = async () => {
     const response = await fetch("/api/ingredients", {
@@ -167,7 +167,6 @@ export default function AddRecipe() {
   const handleRecipeCategoryChange = (e) => {
     setSelectedRecipeCategory(e.target.value);
   };
-
 
   const handleCategoryChange = (e) => {
     getIngredients(e.target.value);
@@ -302,26 +301,52 @@ export default function AddRecipe() {
                   />
                 </div>
                 <div>
-
-                  <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="file_input">Upload file</label>
+                  <label
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    for="file_input"
+                  >
+                    Upload file
+                  </label>
 
                   <div class="flex items-center justify-center w-full">
-                    <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                    <label
+                      for="dropzone-file"
+                      class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+                    >
                       <div class="flex flex-col items-center justify-center pt-5 pb-6">
-                        <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-                          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
+                        <svg
+                          class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400"
+                          aria-hidden="true"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 20 16"
+                        >
+                          <path
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
+                          />
                         </svg>
-                        <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
-                        <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
+                        <p class="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                          <span class="font-semibold">Click to upload</span> or
+                          drag and drop
+                        </p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400">
+                          SVG, PNG, JPG or GIF (MAX. 800x400px)
+                        </p>
                       </div>
-                      <input id="dropzone-file" type="file" class="hidden"
+                      <input
+                        id="dropzone-file"
+                        type="file"
+                        class="hidden"
                         onChange={(e) => {
-                          setRecipeImage(e.target.files?.[0])
+                          setRecipeImage(e.target.files?.[0]);
                         }}
                       />
                     </label>
                   </div>
-
                 </div>
                 <div className="flex flex-row space-x-4 justify-center w-full">
                   <div className="flex flex-col flex-grow">
@@ -377,7 +402,7 @@ export default function AddRecipe() {
                     <input
                       value={cookTime}
                       onChange={(e) => {
-                        setCookTime(e.target.value)
+                        setCookTime(e.target.value);
                       }}
                       type="text"
                       name="cook"
@@ -387,7 +412,6 @@ export default function AddRecipe() {
                       required
                     />
                   </div>
-
                 </div>
 
                 <form className="w-full" action="#" id="ingredients-form">
@@ -596,6 +620,5 @@ export default function AddRecipe() {
         </div>
       </section>
     </>
-
   );
 }

@@ -91,6 +91,17 @@ export default function RecipeWizard() {
     setIngredient(data.ingredients);
     console.log(data);
   };
+  const getAllIngredients = async () => {
+    const response = await fetch("/api/ingredients/all-ingredients", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await response.json();
+    setIngredient(data.ingredients);
+    console.log(data);
+  };
   const getLikes = async () => {
     const response = await fetch("/api/likes/set-isliked", {
       method: "POST",
@@ -115,7 +126,7 @@ export default function RecipeWizard() {
       body: JSON.stringify({ ids: [ids] }),
     });
     const data = await responce.json();
-    console.log(data.recipes);
+    console.log(data.recipes[0]);
     setFindRecipeIngrediensts(data.recipes[0]);
   };
   const getRecipeIngredients = async () => {
@@ -141,14 +152,14 @@ export default function RecipeWizard() {
     setIsDropdownVisible2(() => !isDropdownVisible2);
   };
   const handleFindRecipe = () => {
-    if (selectedCat === "Select Category") {
-      alert("Select Category");
-      return;
-    }
-    if (selectedIng === "Select Category") {
-      alert("Select Ingredient Category");
-      return;
-    }
+    // if (selectedCat === "Select Category") {
+    //   alert("Select Category");
+    //   return;
+    // }
+    // if (selectedIng === "Select Category") {
+    //   alert("Select Ingredient Category");
+    //   return;
+    // }
     if (!checkedIngredients.length > 0) {
       alert("Check in Some Ingredients");
     }
@@ -161,8 +172,9 @@ export default function RecipeWizard() {
   };
   const handleDropdownItemClick = (itemName) => {
     console.log(`Selected item: ${itemName}`);
-    setSelectedCat(itemName);
-    toggleDropdown();
+    setSelectedIng(itemName);
+    getAllIngredients();
+    toggleDropdown2();
   };
   const handleDropdownItemClick2 = (itemName2, category_id) => {
     console.log(`Selected item: ${itemName2}`);
@@ -183,67 +195,9 @@ export default function RecipeWizard() {
               Get Recipes by available ingredients
             </p>
           </div>
-          <div className="flex">
+          <div className="">
             {/* Left Dropdown Button */}
-            <div className="flex flex-col items-center relative ">
-              <label
-                htmlFor="category1"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Recipe Category
-              </label>
-              <button
-                id="dropdownDelayButton"
-                className="text-white  bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                type="button"
-                onClick={toggleDropdown}
-              >
-                {selectedCat}{" "}
-                <svg
-                  className="w-2.5 h-2.5 ms-3"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 10 6"
-                >
-                  <path
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="m1 1 4 4 4-4"
-                  />
-                </svg>
-              </button>
 
-              {/* Left Dropdown Content */}
-              {ingredientsCategories.length > 0 ? (
-                <div
-                  className={`absolute mt-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 divide-y divide-gray-100 rounded-lg shadow ${
-                    isDropdownVisible ? "block" : "hidden"
-                  }`}
-                >
-                  <a
-                    href="#"
-                    className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                    onClick={() => handleDropdownItemClick("All")}
-                  >
-                    All
-                  </a>
-                  {recipeCategory.map((ingredient) => (
-                    <a
-                      href="#"
-                      className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                      onClick={() =>
-                        handleDropdownItemClick(ingredient.category_name)
-                      }
-                    >
-                      {ingredient.category_name}
-                    </a>
-                  ))}
-                </div>
-              ) : null}
-            </div>
             {/*Right Dropdown Button */}
             <div className="flex flex-col items-center justify-center relative ">
               <label
@@ -286,7 +240,7 @@ export default function RecipeWizard() {
                   <a
                     href="#"
                     className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                    onClick={() => handleDropdownItemClick2("All")}
+                    onClick={() => handleDropdownItemClick("All")}
                   >
                     All
                   </a>
@@ -329,35 +283,32 @@ export default function RecipeWizard() {
           </div>
           <div>
             <div className="flex flex-wrap items-center justify-center w-full mt-3 mb-3 sm:mt-0 sm:mb-0 sm:ms-0 sm:me-2">
-              {ingredient.length > 0 &&
-                ingredient.map((ingredient) => (
-                  <div className="flex items-center">
-                    <ul
+              {ingredient.length > 0 && (
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                  {ingredient.map((ingredient) => (
+                    <div
                       key={ingredient.id}
-                      className="flex flex-wrap items-center justify-center mt-3 mb-3 sm:mt-0 sm:mb-0 sm:ms-0 sm:me-2"
+                      className="flex items-center bg-white rounded-md shadow-md p-4"
                     >
-                      <li className="flex items-center">
-                        <input
-                          id={`checkbox-${ingredient.ingredient_id}`}
-                          type="checkbox"
-                          value=""
-                          checked={checkedIngredients.includes(
-                            ingredient.ingredient_id
-                          )}
-                          onChange={() => handleCheckboxChange(ingredient)}
-                          className=" h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                        />
-
-                        <label
-                          htmlFor={`checkbox-${ingredient.ingredient_id}`}
-                          className=" py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                        >
-                          {ingredient.name}
-                        </label>
-                      </li>
-                    </ul>
-                  </div>
-                ))}
+                      <input
+                        id={`checkbox-${ingredient.ingredient_id}`}
+                        type="checkbox"
+                        checked={checkedIngredients.includes(
+                          ingredient.ingredient_id
+                        )}
+                        onChange={() => handleCheckboxChange(ingredient)}
+                        className="h-5 w-5 text-blue-600 rounded focus:ring-blue-500"
+                      />
+                      <label
+                        htmlFor={`checkbox-${ingredient.ingredient_id}`}
+                        className="ml-3 text-gray-700 text-sm"
+                      >
+                        {ingredient.name}
+                      </label>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
           <div className="flex justify-end mt-5">
@@ -414,30 +365,29 @@ export default function RecipeWizard() {
 }
             
             */}
-
+            {console.log(findRecipeIngrediensts)}
             {findRecipeIngrediensts.length > 0 &&
-              findRecipeIngrediensts.map(
-                (recipe) =>
-                  recipe.recipe_category === selectedCat ||
-                  (selectedCat === "All" && (
-                    <RecipeCard
-                      key={recipe.recipe_id}
-                      recipeId={recipe.recipe_id}
-                      imageUrl={
-                        recipe.image_url
-                          ? recipe.image_url
-                          : "https://www.allrecipes.com/thmb/fFW1o307WSqFFYQ3-QXYVpnFj6E=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/48727-Mikes-homemade-pizza-DDMFS-beauty-4x3-BG-2974-a7a9842c14e34ca699f3b7d7143256cf.jpg"
-                      }
-                      likes={recipe.likes_count}
-                      recipeName={recipe.recipe_name}
-                      description={recipe.description}
-                      cookTime={recipe.cook_time}
-                      isLiked={isLiked}
-                      recipe_by={recipe.recipe_by}
-                      recipe_category={recipe.recipe_category}
-                    />
-                  ))
-              )}
+              findRecipeIngrediensts.map((recipe) => (
+                <>
+                  <RecipeCard
+                    key={recipe.recipe_id}
+                    recipeId={recipe.recipe_id}
+                    imageUrl={
+                      recipe.image_url
+                        ? recipe.image_url
+                        : "https://www.allrecipes.com/thmb/fFW1o307WSqFFYQ3-QXYVpnFj6E=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/48727-Mikes-homemade-pizza-DDMFS-beauty-4x3-BG-2974-a7a9842c14e34ca699f3b7d7143256cf.jpg"
+                    }
+                    likes={recipe.likes_count}
+                    recipeName={recipe.recipe_name}
+                    description={recipe.description}
+                    cookTime={recipe.cook_time}
+                    isLiked={isLiked}
+                    recipe_by={recipe.recipe_by}
+                    recipe_category={recipe.recipe_category}
+                  />
+                  {console.log(recipe.recipe_category, " ...... ", selectedCat)}
+                </>
+              ))}
           </div>
         </div>
       </div>

@@ -11,7 +11,8 @@ export const POST = async (req, res) => {
   const email = data.email;
 
   const user = await query({
-    query: "INSERT INTO `user`(`username`, `email`, `password`) VALUES (?,?,?)",
+    query:
+      "INSERT INTO `users`(`username`, `email`, `password`) VALUES (?,?,?)",
     values: [username, email, password],
   });
 
