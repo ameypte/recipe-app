@@ -91,17 +91,14 @@ function MyRecipe() {
 
         {/* recipe card is horizontal */}
         <div className="w-full flex flex-col items-center my-5 space-y-5">
-          
           {recipes.map((recipe) => {
-            if (localStorage.getItem("userId") == recipe.user_id) {
+            if (localStorage.getItem("name") == recipe.user_id) {
               return (
                 <MyRecipeCard
                   recipeId={recipe.recipe_id}
                   recipeName={recipe.recipe_name}
                   description={recipe.description}
-                  imageUrl={
-                    recipe.image_url
-                  }
+                  imageUrl={recipe.image_url}
                 />
               );
             }

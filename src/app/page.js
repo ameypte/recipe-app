@@ -62,7 +62,7 @@ export default function Home() {
     });
     const data = await response.json();
     setRecipes(data);
-    setFilteredRecipes(data); // Initially, display all recipes
+    // setFilteredRecipes(data); // Initially, display all recipes
   };
 
   const handleSearch = (e) => {

@@ -30,7 +30,7 @@ export default function page({ params }) {
                   needs.
                 </p>
                 <div class="flex flex-wrap items-center">
-                  7<div class="w-full px-4 mb-6 sm:w-1/2 md:w-1/2 lg:mb-6">
+                  <div class="w-full px-4 mb-6 sm:w-1/2 md:w-1/2 lg:mb-6">
                     <div class="p-6 bg-white dark:bg-gray-900">
                       <span class="text-blue-500 dark:text-blue-400">
                         <svg
@@ -100,12 +100,12 @@ export default function page({ params }) {
         <div class="container mx-auto px-4">
           <div class="flex flex-wrap text-left lg:text-left">
             <div class="w-full lg:w-6/12 px-4">
-              <h4 class="text-3xl fonat-semibold text-blueGray-700 w-full lg:w-6/12 px-4 text-white	">
+              <h4 class="text-3xl fonat-semibold text-blueGray-700 w-full lg:w-6/12 px-4 text-black	">
                 Let's keep in touch!
               </h4>
               <h5 class="text-lg mt-0 mb-2 text-blueGray-600"></h5>
             </div>
-            <div class="w-full lg:w-6/12 px-4 text-white	">
+            <div class="w-full lg:w-6/12 px-4 text-black	">
               <div class="flex flex-wrap items-top mb-6">
                 <div class="w-full  lg:w-4/12 px-4">
                   <span class="block uppercase text-blueGray-500 text-xl font-semibold mb-2">
@@ -116,7 +116,7 @@ export default function page({ params }) {
                       <a
                         class="text-blueGray-600 hover:text-blueGray-800 font-semibold block pb-2 text-sm"
                       >
-                        Heramb Bhoodhar
+                        Bhavesh Patil
                       </a>
                     </li>
                     <li>
@@ -130,21 +130,21 @@ export default function page({ params }) {
                       <a
                         class="text-blueGray-600 hover:text-blueGray-800 font-semibold block pb-2 text-sm"
                       >
-                        Bhavesh Patil
+                        Heramb Bhoodhar
                       </a>
                     </li>
                     <li>
                       <a
                         class="text-blueGray-600 hover:text-blueGray-800 font-semibold block pb-2 text-sm"
                       >
-                        Diksha Shingne
+                       Tanaya Korhalkar
                       </a>
                     </li>
                     <li>
                       <a
                         class="text-blueGray-600 hover:text-blueGray-800 font-semibold block pb-2 text-sm"
                       >
-                        Urja Wagh
+                        Chetna ingale
                       </a>
                     </li>
                   </ul>

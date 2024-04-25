@@ -13,7 +13,7 @@ function MyRecipeCard({ recipeName, description, isLiked, imageUrl, recipeId }) 
       className="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row w-3/4 hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700"
     >
       <img
-        className="object-cover w-full rounded-t-lg h-96 md:h-auto md:w-64 md:rounded-none md:rounded-l-lg"
+        className="object-cover w-96 rounded-t-lg h-96 md:h-auto md:w-64 md:rounded-none md:rounded-l-lg"
         src={imageUrl ? imageUrl : "https://www.allrecipes.com/thmb/fFW1o307WSqFFYQ3-QXYVpnFj6E=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/48727-Mikes-homemade-pizza-DDMFS-beauty-4x3-BG-2974-a7a9842c14e34ca699f3b7d7143256cf.jpg"}
         alt=""
       />
